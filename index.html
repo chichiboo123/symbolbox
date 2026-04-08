@@ -94,6 +94,108 @@
     /* Scrollbar */
     ::-webkit-scrollbar { height: 4px; width: 4px; }
     ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+
+    /* ── 문서작성 탭 전용 스타일 ── */
+    .doc-section {
+      background: #fff;
+      border: 1px solid #f3f4f6;
+      border-radius: 1rem;
+      padding: 1rem 1.25rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .doc-section-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .doc-section-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      letter-spacing: 0.04em;
+    }
+    .doc-section-badge {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+    .badge-rule   { background: #ede9fe; color: #5b21b6; }
+    .badge-opt    { background: #d1fae5; color: #065f46; }
+    .badge-unit   { background: #fef3c7; color: #92400e; }
+    .badge-punct  { background: #e0f2fe; color: #0c4a6e; }
+    .badge-num    { background: #fce7f3; color: #9d174d; }
+    .badge-etc    { background: #f1f5f9; color: #475569; }
+
+    /* 항목 순서 시각화 */
+    .seq-flow {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+      padding: 0.6rem 0.75rem;
+      background: #fafafa;
+      border-radius: 0.5rem;
+      border: 1px solid #f3f4f6;
+    }
+    .seq-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .seq-chip-sym {
+      font-size: 15px;
+      font-weight: 600;
+      color: #4f46e5;
+      line-height: 1;
+    }
+    .seq-chip-label {
+      font-size: 9px;
+      color: #9ca3af;
+    }
+    .seq-arrow {
+      font-size: 12px;
+      color: #d1d5db;
+      margin: 0 1px;
+      align-self: flex-start;
+      margin-top: 6px;
+    }
+
+    /* 문서작성 카드 */
+    .doc-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      position: relative;
+      overflow: hidden;
+      background: #fafafa;
+      border: 1px solid #f3f4f6;
+      border-radius: 0.65rem;
+      width: 100%;
+      height: 72px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease, color .12s ease;
+    }
+    .doc-card:hover  { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.08); border-color: #a5b4fc; background: #fff; color: #4f46e5; }
+    .doc-card:active { transform: translateY(0); }
+    .doc-card:focus  { outline: none; box-shadow: 0 0 0 3px rgba(99,102,241,.35); }
+    .doc-card .sym-name { color: #c4c8ce; }
+    .doc-card:hover .sym-name { color: #818cf8; }
+
+    .doc-grid {
+      display: grid;
+      gap: 6px;
+      grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    }
   </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
@@ -143,8 +245,12 @@
   <!-- Symbol count -->
   <p id="countLabel" class="text-xs text-gray-400 mb-2"></p>
 
-  <!-- Grid -->
+  <!-- Normal Grid -->
   <div id="grid" class="grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(88px, 1fr))"></div>
+
+  <!-- 문서작성 탭 전용 패널 -->
+  <div id="docPanel" class="hidden"></div>
+
   <div id="empty" class="hidden text-center py-16 text-gray-400 text-sm">
     <span class="material-icons block mb-2" style="font-size:40px">search_off</span>
     <span>검색 결과가 없어요</span>
@@ -174,7 +280,6 @@
 <script>
 /* ============================================================
    DATA — [char, name, category]
-   Categories: pop | shape | arrow | math | greek | dot | roman | symbol | currency | bracket | emoji
 ============================================================ */
 var D = [
 
@@ -317,7 +422,6 @@ var D = [
 ['~','물결','dot'],['∼','수학물결','dot'],['～','전각물결','dot'],['≀','물결연산자','dot'],
 
 /* ── 로마자·숫자 ── */
-/* 로마자 대문자 */
 ['Ⅰ','로마숫자1(대)','roman'],['Ⅱ','로마숫자2(대)','roman'],
 ['Ⅲ','로마숫자3(대)','roman'],['Ⅳ','로마숫자4(대)','roman'],
 ['Ⅴ','로마숫자5(대)','roman'],['Ⅵ','로마숫자6(대)','roman'],
@@ -326,7 +430,6 @@ var D = [
 ['Ⅺ','로마숫자11(대)','roman'],['Ⅻ','로마숫자12(대)','roman'],
 ['Ⅼ','로마숫자50(대)','roman'],['Ⅽ','로마숫자100(대)','roman'],
 ['Ⅾ','로마숫자500(대)','roman'],['Ⅿ','로마숫자1000(대)','roman'],
-/* 로마자 소문자 */
 ['ⅰ','로마숫자1(소)','roman'],['ⅱ','로마숫자2(소)','roman'],
 ['ⅲ','로마숫자3(소)','roman'],['ⅳ','로마숫자4(소)','roman'],
 ['ⅴ','로마숫자5(소)','roman'],['ⅵ','로마숫자6(소)','roman'],
@@ -335,20 +438,16 @@ var D = [
 ['ⅺ','로마숫자11(소)','roman'],['ⅻ','로마숫자12(소)','roman'],
 ['ⅼ','로마숫자50(소)','roman'],['ⅽ','로마숫자100(소)','roman'],
 ['ⅾ','로마숫자500(소)','roman'],['ⅿ','로마숫자1000(소)','roman'],
-/* 분수 */
 ['½','이분의일','roman'],['⅓','삼분의일','roman'],['⅔','삼분의이','roman'],
 ['¼','사분의일','roman'],['¾','사분의삼','roman'],
 ['⅕','오분의일','roman'],['⅖','오분의이','roman'],['⅗','오분의삼','roman'],['⅘','오분의사','roman'],
 ['⅙','육분의일','roman'],['⅚','육분의오','roman'],
 ['⅛','팔분의일','roman'],['⅜','팔분의삼','roman'],['⅝','팔분의오','roman'],['⅞','팔분의칠','roman'],
-/* 특수 숫자 기호 */
 ['№','번호','roman'],['℃','섭씨도','roman'],['℉','화씨도','roman'],
 ['℅','백분율케어','roman'],['℆','어카운트오브','roman'],
-/* 전각 숫자 */
 ['０','전각숫자0','roman'],['１','전각숫자1','roman'],['２','전각숫자2','roman'],
 ['３','전각숫자3','roman'],['４','전각숫자4','roman'],['５','전각숫자5','roman'],
 ['６','전각숫자6','roman'],['７','전각숫자7','roman'],['８','전각숫자8','roman'],['９','전각숫자9','roman'],
-/* 원 숫자 */
 ['①','원숫자1','roman'],['②','원숫자2','roman'],['③','원숫자3','roman'],
 ['④','원숫자4','roman'],['⑤','원숫자5','roman'],['⑥','원숫자6','roman'],
 ['⑦','원숫자7','roman'],['⑧','원숫자8','roman'],['⑨','원숫자9','roman'],
@@ -356,18 +455,15 @@ var D = [
 ['⑬','원숫자13','roman'],['⑭','원숫자14','roman'],['⑮','원숫자15','roman'],
 ['⑯','원숫자16','roman'],['⑰','원숫자17','roman'],['⑱','원숫자18','roman'],
 ['⑲','원숫자19','roman'],['⑳','원숫자20','roman'],
-/* 검은 원 숫자 */
 ['❶','검은원숫자1','roman'],['❷','검은원숫자2','roman'],['❸','검은원숫자3','roman'],
 ['❹','검은원숫자4','roman'],['❺','검은원숫자5','roman'],['❻','검은원숫자6','roman'],
 ['❼','검은원숫자7','roman'],['❽','검은원숫자8','roman'],['❾','검은원숫자9','roman'],
 ['❿','검은원숫자10','roman'],
-/* 괄호 숫자 */
 ['⑴','괄호숫자1','roman'],['⑵','괄호숫자2','roman'],['⑶','괄호숫자3','roman'],
 ['⑷','괄호숫자4','roman'],['⑸','괄호숫자5','roman'],['⑹','괄호숫자6','roman'],
 ['⑺','괄호숫자7','roman'],['⑻','괄호숫자8','roman'],['⑼','괄호숫자9','roman'],
 ['⑽','괄호숫자10','roman'],['⑾','괄호숫자11','roman'],['⑿','괄호숫자12','roman'],
 ['⒀','괄호숫자13','roman'],['⒁','괄호숫자14','roman'],['⒂','괄호숫자15','roman'],
-/* 점 숫자 */
 ['⒈','점숫자1','roman'],['⒉','점숫자2','roman'],['⒊','점숫자3','roman'],
 ['⒋','점숫자4','roman'],['⒌','점숫자5','roman'],['⒍','점숫자6','roman'],
 ['⒎','점숫자7','roman'],['⒏','점숫자8','roman'],['⒐','점숫자9','roman'],['⒑','점숫자10','roman'],
@@ -447,11 +543,118 @@ var D = [
 ]; /* end D */
 
 /* ============================================================
+   문서작성 탭 데이터 — 카테고리 블록 구조
+============================================================ */
+var DOC_SECTIONS = [
+  {
+    id: 'doc-seq',
+    title: '항목 구분 기호',
+    badge: '규정 순서',
+    badgeClass: 'badge-rule',
+    icon: 'format_list_numbered',
+    note: '행정업무 운영 규정 기준 항목 표시 순서',
+    seq: [
+      {sym:'1.',  label:'첫째'},
+      {sym:'가.', label:'둘째'},
+      {sym:'1)',  label:'셋째'},
+      {sym:'가)', label:'넷째'},
+      {sym:'(1)', label:'다섯째'},
+      {sym:'(가)',label:'여섯째'},
+      {sym:'①',  label:'일곱째'},
+    ],
+    chars: [
+      ['①','원숫자1'],['②','원숫자2'],['③','원숫자3'],['④','원숫자4'],['⑤','원숫자5'],
+      ['⑥','원숫자6'],['⑦','원숫자7'],['⑧','원숫자8'],['⑨','원숫자9'],['⑩','원숫자10'],
+      ['⑪','원숫자11'],['⑫','원숫자12'],['⑬','원숫자13'],['⑭','원숫자14'],['⑮','원숫자15'],
+      ['⑯','원숫자16'],['⑰','원숫자17'],['⑱','원숫자18'],['⑲','원숫자19'],['⑳','원숫자20'],
+    ]
+  },
+  {
+    id: 'doc-bullet',
+    title: '보조 항목 기호',
+    badge: '필요 시 사용',
+    badgeClass: 'badge-opt',
+    icon: 'format_list_bulleted',
+    chars: [
+      ['□','빈네모'],['○','빈원'],['■','채운네모'],['●','채운원'],['◎','이중원'],
+      ['-','줄표'],['·','가운뎃점'],['ㆍ','중간점'],['△','흰삼각형'],['▲','검은삼각형'],
+      ['▽','흰역삼각형'],['▼','검은역삼각형'],['◇','흰다이아몬드'],['◆','검은다이아몬드'],
+    ]
+  },
+  {
+    id: 'doc-bracket',
+    title: '괄호 및 인용 부호',
+    badge: '법령·제목 인용',
+    badgeClass: 'badge-punct',
+    icon: 'format_quote',
+    chars: [
+      ['「','왼낫표'],['」','오른낫표'],['『','왼겹낫표'],['』','오른겹낫표'],
+      ['〈','왼꺾쇠'],['〉','오른꺾쇠'],['《','왼겹꺾쇠'],['》','오른겹꺾쇠'],
+      ['〔','왼거북이괄호'],['〕','오른거북이괄호'],['【','왼굵은괄호'],['】','오른굵은괄호'],
+    ]
+  },
+  {
+    id: 'doc-punct',
+    title: '문장 부호',
+    badge: '자주 쓰이는 부호',
+    badgeClass: 'badge-punct',
+    icon: 'more_horiz',
+    chars: [
+      ['※','참고표'],['〃','같음표'],['…','말줄임표'],['‥','쌍점줄임'],
+      ['∥','평행'],['—','em대시'],['―','수평바'],['′','분기호'],['″','초기호'],
+    ]
+  },
+  {
+    id: 'doc-roman',
+    title: '원문자 · 로마자',
+    badge: '순서 표기',
+    badgeClass: 'badge-num',
+    icon: 'looks_one',
+    chars: [
+      ['㉠','한글원문자가'],['㉡','한글원문자나'],['㉢','한글원문자다'],['㉣','한글원문자라'],
+      ['㉤','한글원문자마'],['㉥','한글원문자바'],['㉦','한글원문자사'],['㉧','한글원문자아'],
+      ['Ⅰ','로마숫자1(대)'],['Ⅱ','로마숫자2(대)'],['Ⅲ','로마숫자3(대)'],['Ⅳ','로마숫자4(대)'],
+      ['Ⅴ','로마숫자5(대)'],['Ⅵ','로마숫자6(대)'],['Ⅶ','로마숫자7(대)'],['Ⅷ','로마숫자8(대)'],
+      ['Ⅸ','로마숫자9(대)'],['Ⅹ','로마숫자10(대)'],
+      ['ⅰ','로마숫자1(소)'],['ⅱ','로마숫자2(소)'],['ⅲ','로마숫자3(소)'],['ⅳ','로마숫자4(소)'],
+      ['ⅴ','로마숫자5(소)'],['ⅵ','로마숫자6(소)'],
+    ]
+  },
+  {
+    id: 'doc-unit',
+    title: '단위 기호',
+    badge: '숫자와 함께 사용',
+    badgeClass: 'badge-unit',
+    icon: 'straighten',
+    chars: [
+      ['㎡','제곱미터'],['㎢','제곱킬로미터'],['㎣','세제곱센티'],['㎞','킬로미터'],
+      ['㎝','센티미터'],['㎜','밀리미터'],['㎛','마이크로미터'],
+      ['㎏','킬로그램'],['㎎','밀리그램'],['㎖','밀리리터'],['㎗','데시리터'],['㎘','킬로리터'],
+      ['㎉','킬로칼로리'],['℃','섭씨도'],['㏊','헥타르'],['㏈','데시벨'],['㏗','pH'],
+    ]
+  },
+  {
+    id: 'doc-etc',
+    title: '기타 기호',
+    badge: '공문서 자주 등장',
+    badgeClass: 'badge-etc',
+    icon: 'tag',
+    chars: [
+      ['△','증감표시'],['▲','상승'],['▼','하락'],
+      ['→','오른화살표'],['←','왼화살표'],['↑','위화살표'],['↓','아래화살표'],['↔','좌우화살표'],
+      ['㈜','주식회사'],['№','번호'],['§','섹션'],['′','분'],['″','초'],
+      ['©','저작권'],['®','등록상표'],['™','상표'],
+    ]
+  },
+];
+
+/* ============================================================
    CATEGORIES
 ============================================================ */
 var CATS = [
   {id:'all',     label:'전체',        icon:'apps'},
   {id:'pop',     label:'인기',        icon:'star'},
+  {id:'doc',     label:'문서작성',    icon:'description'},
   {id:'dot',     label:'점·구분선',  icon:'more_horiz'},
   {id:'shape',   label:'별·도형',    icon:'category'},
   {id:'arrow',   label:'화살표',      icon:'trending_flat'},
@@ -510,9 +713,9 @@ function getCharName(c) {
   return '';
 }
 
-function makeCard(c, name, small) {
+function makeCard(c, name, small, isDoc) {
   var b = document.createElement('button');
-  b.className = small ? 'sym-sm' : 'sym-card';
+  b.className = small ? 'sym-sm' : (isDoc ? 'doc-card' : 'sym-card');
   var displayName = name || getCharName(c);
   b.title = c + (displayName ? '  ' + displayName : '');
   b.setAttribute('aria-label', (displayName || c) + ' 복사');
@@ -593,7 +796,65 @@ function showToast(msg) {
 }
 
 /* ============================================================
-   RENDER
+   문서작성 탭 렌더
+============================================================ */
+function renderDocPanel() {
+  var panel = document.getElementById('docPanel');
+  panel.innerHTML = '';
+
+  DOC_SECTIONS.forEach(function(sec) {
+    var wrap = document.createElement('div');
+    wrap.className = 'doc-section';
+
+    /* 헤더 */
+    var header = document.createElement('div');
+    header.className = 'doc-section-header';
+    header.innerHTML =
+      '<span class="material-icons text-gray-400" style="font-size:15px">' + sec.icon + '</span>' +
+      '<span class="doc-section-title">' + sec.title + '</span>' +
+      '<span class="doc-section-badge ' + sec.badgeClass + '">' + sec.badge + '</span>';
+    wrap.appendChild(header);
+
+    /* 규정 순서 시각화 (항목 구분 기호 섹션만) */
+    if (sec.seq) {
+      var noteEl = document.createElement('p');
+      noteEl.style.cssText = 'font-size:11px;color:#9ca3af;margin-bottom:8px;';
+      noteEl.textContent = sec.note;
+      wrap.appendChild(noteEl);
+
+      var flow = document.createElement('div');
+      flow.className = 'seq-flow';
+      sec.seq.forEach(function(item, idx) {
+        var chip = document.createElement('div');
+        chip.className = 'seq-chip';
+        chip.innerHTML =
+          '<span class="seq-chip-sym">' + item.sym + '</span>' +
+          '<span class="seq-chip-label">' + item.label + '</span>';
+        flow.appendChild(chip);
+        if (idx < sec.seq.length - 1) {
+          var arrow = document.createElement('span');
+          arrow.className = 'seq-arrow';
+          arrow.textContent = '→';
+          flow.appendChild(arrow);
+        }
+      });
+      wrap.appendChild(flow);
+    }
+
+    /* 카드 그리드 */
+    var grid = document.createElement('div');
+    grid.className = 'doc-grid';
+    sec.chars.forEach(function(entry) {
+      grid.appendChild(makeCard(entry[0], entry[1], false, true));
+    });
+    wrap.appendChild(grid);
+
+    panel.appendChild(wrap);
+  });
+}
+
+/* ============================================================
+   RENDER (일반 탭)
 ============================================================ */
 function getFiltered() {
   var qn = q.trim().toLowerCase();
@@ -603,8 +864,8 @@ function getFiltered() {
     var entry = D[i];
     var ch = entry[0], nm = entry[1], ct = entry[2];
     if (cat !== 'all' && ct !== cat) continue;
-    var key = ch + '_' + ct; // allow same char in different categories
-    if (cat === 'all') key = ch; // dedupe when showing all
+    var key = ch + '_' + ct;
+    if (cat === 'all') key = ch;
     if (seen[key]) continue;
     seen[key] = true;
     if (!qn) { result.push(entry); continue; }
@@ -614,14 +875,27 @@ function getFiltered() {
 }
 
 function renderGrid() {
-  var g   = document.getElementById('grid');
-  var em  = document.getElementById('cnt');
-  var lbl = document.getElementById('countLabel');
-  var emEl= document.getElementById('empty');
-  var data = getFiltered();
+  var g    = document.getElementById('grid');
+  var lbl  = document.getElementById('countLabel');
+  var emEl = document.getElementById('empty');
+  var panel= document.getElementById('docPanel');
 
+  /* 문서작성 탭 */
+  if (cat === 'doc') {
+    g.classList.add('hidden');
+    panel.classList.remove('hidden');
+    emEl.classList.add('hidden');
+    lbl.textContent = '';
+    renderDocPanel();
+    return;
+  }
+
+  /* 일반 탭 */
+  panel.classList.add('hidden');
+  g.classList.remove('hidden');
   g.innerHTML = '';
 
+  var data = getFiltered();
   if (!data.length) {
     emEl.classList.remove('hidden');
     lbl.textContent = '';
@@ -632,9 +906,7 @@ function renderGrid() {
 
   var frag = document.createDocumentFragment();
   for (var i = 0; i < data.length; i++) {
-    var entry = data[i];
-    var b = makeCard(entry[0], entry[1], false);
-    frag.appendChild(b);
+    frag.appendChild(makeCard(data[i][0], data[i][1], false, false));
   }
   g.appendChild(frag);
 }
@@ -677,7 +949,6 @@ document.getElementById('q').addEventListener('input', function(e) {
   q = e.target.value;
   document.getElementById('clearBtn').classList.toggle('hidden', !q);
 
-  // 검색어 입력 시 '전체' 탭으로 자동 전환
   if (q && cat !== 'all') {
     cat = 'all';
     document.querySelectorAll('.tab-btn').forEach(function(x) { x.classList.remove('on'); });
