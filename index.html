@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SymbolBox · 여기있어 특수문자</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-gov.min.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { font-family: "Pretendard GOV", sans-serif; }
+
+    @keyframes slideUp { from { transform: translateY(14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+    .t-in  { animation: slideUp .22s ease forwards; }
+    .t-out { animation: fadeOut .28s ease forwards; }
+
+    /* Symbol card */
+    .sym-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #f3f4f6;
+      border-radius: 0.75rem;
+      width: 100%;
+      height: 52px;
+      font-size: 1.25rem;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, color .12s ease;
+    }
+    .sym-card:hover  { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.09); border-color: #a5b4fc; color: #4f46e5; }
+    .sym-card:active { transform: translateY(0); }
+    .sym-card:focus  { outline: none; box-shadow: 0 0 0 3px rgba(99,102,241,.35); }
+
+    /* Small card (recent) */
+    .sym-sm {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #f3f4f6;
+      border-radius: 0.5rem;
+      width: 36px;
+      height: 36px;
+      font-size: 1rem;
+      cursor: pointer;
+      user-select: none;
+      transition: border-color .12s, color .12s;
+    }
+    .sym-sm:hover { border-color: #a5b4fc; color: #4f46e5; }
+
+    /* Ripple */
+    .ripple { position: absolute; border-radius: 50%; background: rgba(99,102,241,.22); transform: scale(0); animation: rpl .45s linear; pointer-events: none; }
+    @keyframes rpl { to { transform: scale(4); opacity: 0; } }
+
+    /* Tabs */
+    .tab-btn { border-bottom: 2px solid transparent; transition: color .15s, border-color .15s; flex-shrink: 0; white-space: nowrap; }
+    .tab-btn.on { color: #4f46e5; border-bottom-color: #4f46e5; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { height: 4px; width: 4px; }
+    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+<!-- HEADER -->
+<header class="bg-white shadow-sm sticky top-0 z-40">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3">
+    <div class="flex items-center gap-1.5 shrink-0">
+      <span class="material-icons text-indigo-600" style="font-size:24px">grid_view</span>
+      <span class="font-bold text-xl text-gray-800 tracking-tight">SymbolBox</span>
+    </div>
+    <div class="flex-1 relative">
+      <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" style="font-size:18px">search</span>
+      <input id="q" type="text" placeholder="문자 이름으로 검색…"
+        class="w-full pl-9 pr-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:bg-white transition"/>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="flex-1 max-w-5xl w-full mx-auto px-4 pt-4 pb-10">
+
+  <!-- Recent -->
+  <section id="recentSec" class="mb-5 hidden">
+    <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-1">
+      <span class="material-icons text-amber-400" style="font-size:14px">history</span>최근 복사
+    </p>
+    <div id="recentGrid" class="flex flex-wrap gap-1.5"></div>
+  </section>
+
+  <!-- Tabs -->
+  <div class="overflow-x-auto border-b border-gray-200 mb-3">
+    <div id="tabs" class="flex"></div>
+  </div>
+
+  <!-- Symbol count -->
+  <p id="countLabel" class="text-xs text-gray-400 mb-2"></p>
+
+  <!-- Grid -->
+  <div id="grid" class="grid gap-1.5" style="grid-template-columns: repeat(auto-fill, minmax(52px, 1fr))"></div>
+  <p id="empty" class="hidden text-center py-16 text-gray-400 text-sm">
+    <span class="material-icons block mb-1" style="font-size:40px">search_off</span>검색 결과 없음
+  </p>
+</main>
+
+<!-- FOOTER -->
+<footer class="text-center py-4 text-xs text-gray-400">
+  <a href="https://litt.ly/chichiboo" target="_blank" rel="noopener"
+     class="hover:text-indigo-500 transition-colors">
+    Created by. 교육뮤지컬 꿈꾸는 치수쌤
+  </a>
+</footer>
+
+<!-- TOAST -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0">
+  <div class="flex items-center gap-2 bg-gray-900 text-white text-sm font-medium px-5 py-2.5 rounded-2xl shadow-xl">
+    <span class="material-icons text-green-400" style="font-size:16px">check_circle</span>
+    <span id="toastTxt"></span>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DATA — [char, name, category]
+   Categories: pop | shape | arrow | math | greek | dot | roman | symbol | currency | bracket | emoji
+============================================================ */
+var D = [
+
+/* ── 인기 ── */
+['★','검은별','pop'],['☆','흰별','pop'],['✓','체크','pop'],['✔','두꺼운체크','pop'],
+['☑','체크박스-체크','pop'],['☒','체크박스-X','pop'],['✅','초록체크','pop'],['❌','빨간X','pop'],
+['❎','빨간X네모','pop'],['✕','엑스','pop'],['✖','두꺼운엑스','pop'],
+['❤','하트','pop'],['♥','하트(소)','pop'],['♡','빈하트','pop'],
+['→','오른쪽화살표','pop'],['←','왼쪽화살표','pop'],['↑','위화살표','pop'],['↓','아래화살표','pop'],
+['©','저작권','pop'],['®','등록상표','pop'],['™','상표','pop'],
+['°','도-각도','pop'],['…','말줄임표','pop'],['—','em대시','pop'],
+['·','가운뎃점','pop'],['•','중간점','pop'],['※','참고표','pop'],
+['■','검은사각형','pop'],['□','흰사각형','pop'],['▲','검은삼각형위','pop'],['●','검은원','pop'],
+['♪','음표','pop'],['@','골뱅이','pop'],['#','샵','pop'],['&','앰퍼샌드','pop'],
+['₩','원화','pop'],['$','달러','pop'],['%','퍼센트','pop'],['‰','퍼밀','pop'],
+['±','더하기빼기','pop'],['∞','무한대','pop'],['≠','같지않음','pop'],
+
+/* ── 별·도형 ── */
+['★','검은별','shape'],['☆','흰별','shape'],['✦','네모별','shape'],['✧','흰네모별','shape'],
+['✩','스트레스별','shape'],['✪','원별','shape'],['✫','열두줄별','shape'],['✬','십육줄별','shape'],
+['✭','굵은별','shape'],['✮','원안별','shape'],['✯','나침반별','shape'],['✰','그림자별','shape'],
+['⋆','소별','shape'],['∗','별표','shape'],
+['■','검은사각형','shape'],['□','흰사각형','shape'],
+['▪','작은검은사각형','shape'],['▫','작은흰사각형','shape'],
+['◼','중간검은사각형','shape'],['◻','중간흰사각형','shape'],
+['◾','소검정사각','shape'],['◽','소흰사각','shape'],
+['▬','검은직사각형','shape'],['▭','흰직사각형','shape'],
+['▲','검은삼각형위','shape'],['△','흰삼각형위','shape'],['▴','작은검은위삼각','shape'],['▵','작은흰위삼각','shape'],
+['▼','검은삼각형아래','shape'],['▽','흰삼각형아래','shape'],['▾','작은검은아래삼각','shape'],['▿','작은흰아래삼각','shape'],
+['◀','검은삼각형왼','shape'],['▶','검은삼각형오른','shape'],['◁','흰삼각형왼','shape'],['▷','흰삼각형오른','shape'],
+['●','검은원','shape'],['○','흰원','shape'],['◉','원안점','shape'],['◎','이중원','shape'],
+['◦','흰점','shape'],['⊙','원점','shape'],['⊚','이중원점','shape'],['⊛','별안원','shape'],
+['◆','검은다이아몬드','shape'],['◇','흰다이아몬드','shape'],['◈','다이아안다이아','shape'],['❖','꽃다이아몬드','shape'],
+['❤','검은하트','shape'],['♥','하트','shape'],['♡','흰하트','shape'],
+['❥','회전하트','shape'],['❣','느낌표하트','shape'],
+['✿','검은꽃','shape'],['❀','흰꽃','shape'],['❁','펼친꽃','shape'],['✾','여섯잎꽃','shape'],
+['❃','여섯별꽃','shape'],['✽','육각별꽃','shape'],['❋','여덟잎꽃','shape'],['✼','구슬꽃','shape'],
+['✻','여섯줄별','shape'],['✺','여섯뿔별','shape'],['✹','열두뿔별','shape'],['✸','팔각별','shape'],
+['✷','팔줄별','shape'],['✶','여섯별','shape'],['✵','원형별','shape'],['✴','팔방별','shape'],
+['✳','팔잎별','shape'],['✲','나선별','shape'],['✱','무거운별','shape'],
+['⬡','흰육각형','shape'],['⬢','검은육각형','shape'],['⬣','수평육각형','shape'],
+['⎔','하드웨어아이콘','shape'],['⌖','위치표시','shape'],
+['☬','다르마','shape'],['✡','다윗별','shape'],['✠','철십자','shape'],['☥','앙크','shape'],
+
+/* ── 화살표 ── */
+['→','오른쪽화살표','arrow'],['←','왼쪽화살표','arrow'],['↑','위쪽화살표','arrow'],['↓','아래쪽화살표','arrow'],
+['↔','좌우화살표','arrow'],['↕','상하화살표','arrow'],
+['↗','오른쪽위화살표','arrow'],['↘','오른쪽아래화살표','arrow'],
+['↙','왼쪽아래화살표','arrow'],['↖','왼쪽위화살표','arrow'],
+['⇒','이중오른화살표','arrow'],['⇐','이중왼화살표','arrow'],
+['⇑','이중위화살표','arrow'],['⇓','이중아래화살표','arrow'],
+['⇔','이중좌우화살표','arrow'],['⇕','이중상하화살표','arrow'],
+['⇗','이중오른위화살표','arrow'],['⇘','이중오른아래화살표','arrow'],
+['➡','두꺼운오른화살표','arrow'],['⬅','두꺼운왼화살표','arrow'],
+['⬆','두꺼운위화살표','arrow'],['⬇','두꺼운아래화살표','arrow'],
+['⬈','두꺼운오른위화살표','arrow'],['⬉','두꺼운왼위화살표','arrow'],
+['⬊','두꺼운오른아래화살표','arrow'],['⬋','두꺼운왼아래화살표','arrow'],
+['↩','되돌아가는화살표','arrow'],['↪','꺾이는화살표','arrow'],
+['↫','오버화살표','arrow'],['↬','루프화살표','arrow'],
+['↰','위왼화살표','arrow'],['↱','위오른화살표','arrow'],
+['↲','아래왼화살표','arrow'],['↳','아래오른화살표','arrow'],
+['↻','시계방향화살표','arrow'],['↺','반시계방향화살표','arrow'],
+['⇄','오른왼화살표','arrow'],['⇅','위아래화살표','arrow'],['⇆','왼오른화살표','arrow'],
+['⇇','이중왼쪽화살표','arrow'],['⇈','이중위쪽화살표','arrow'],
+['⇉','이중오른쪽화살표','arrow'],['⇊','이중아래쪽화살표','arrow'],
+['⇋','왼오른이중화살표','arrow'],['⇌','오른왼이중화살표','arrow'],
+['➤','오른향삼각화살표','arrow'],['➥','오른꺾기화살표','arrow'],['➦','왼꺾기화살표','arrow'],
+['➧','오른점화살표','arrow'],['➨','오른이중점화살표','arrow'],
+['➩','오른그늘화살표','arrow'],['➪','오른오버화살표','arrow'],
+['➫','오른물결화살표','arrow'],['➬','오른고리화살표','arrow'],
+['➭','오른물결고리화살표','arrow'],['➮','오른굵은화살표','arrow'],
+['➯','오른굵은고리화살표','arrow'],['➲','오른세모화살표','arrow'],
+['➳','오른꽃화살표','arrow'],['➵','오른흰화살표','arrow'],
+['➸','오른꽃흰화살표','arrow'],['➺','오른열린화살표','arrow'],
+['➻','오른굵은열린화살표','arrow'],['➼','오른긴화살표','arrow'],['➽','오른굵은긴화살표','arrow'],
+
+/* ── 수학기호 ── */
+['±','플러스마이너스','math'],['∓','마이너스플러스','math'],['×','곱하기','math'],['÷','나누기','math'],
+['=','등호','math'],['≠','같지않음','math'],['≈','거의같음','math'],['≡','완전같음','math'],['≢','완전같지않음','math'],
+['≤','이하','math'],['≥','이상','math'],['≦','이하(겹)','math'],['≧','이상(겹)','math'],
+['≪','훨씬작음','math'],['≫','훨씬큼','math'],['≅','근사같음','math'],['≃','점근같음','math'],
+['∞','무한대','math'],['∅','공집합','math'],['∝','비례','math'],['∼','물결같음','math'],
+['∑','시그마-합계','math'],['∏','파이-곱','math'],
+['√','제곱근','math'],['∛','세제곱근','math'],['∜','네제곱근','math'],
+['∫','적분','math'],['∬','이중적분','math'],['∭','삼중적분','math'],['∮','폐적분','math'],
+['∂','편미분','math'],['∇','나블라','math'],
+['∈','원소','math'],['∉','비원소','math'],
+['⊂','부분집합','math'],['⊃','초집합','math'],['⊆','부분집합이하','math'],['⊇','초집합이상','math'],
+['∩','교집합','math'],['∪','합집합','math'],
+['⊕','원안플러스','math'],['⊗','원안곱하기','math'],['⊘','원안나누기','math'],
+['∧','논리and','math'],['∨','논리or','math'],['¬','논리not','math'],
+['⊥','수직','math'],['∥','평행','math'],['∠','각도','math'],['∡','측정각도','math'],['∟','직각','math'],
+['∀','모든것','math'],['∃','존재한다','math'],['∄','존재하지않는다','math'],
+['∴','따라서','math'],['∵','왜냐하면','math'],['∶','비율','math'],['∷','비례','math'],
+['¹','위첨자1','math'],['²','위첨자2','math'],['³','위첨자3','math'],['⁴','위첨자4','math'],['⁵','위첨자5','math'],
+['⁶','위첨자6','math'],['⁷','위첨자7','math'],['⁸','위첨자8','math'],['⁹','위첨자9','math'],['⁰','위첨자0','math'],
+['₁','아래첨자1','math'],['₂','아래첨자2','math'],['₃','아래첨자3','math'],
+['₄','아래첨자4','math'],['₅','아래첨자5','math'],['₆','아래첨자6','math'],
+['₇','아래첨자7','math'],['₈','아래첨자8','math'],['₉','아래첨자9','math'],['₀','아래첨자0','math'],
+
+/* ── 그리스 문자 ── */
+['Α','알파(대)','greek'],['α','알파(소)','greek'],
+['Β','베타(대)','greek'],['β','베타(소)','greek'],
+['Γ','감마(대)','greek'],['γ','감마(소)','greek'],
+['Δ','델타(대)','greek'],['δ','델타(소)','greek'],
+['Ε','엡실론(대)','greek'],['ε','엡실론(소)','greek'],
+['Ζ','제타(대)','greek'],['ζ','제타(소)','greek'],
+['Η','에타(대)','greek'],['η','에타(소)','greek'],
+['Θ','세타(대)','greek'],['θ','세타(소)','greek'],
+['Ι','이오타(대)','greek'],['ι','이오타(소)','greek'],
+['Κ','카파(대)','greek'],['κ','카파(소)','greek'],
+['Λ','람다(대)','greek'],['λ','람다(소)','greek'],
+['Μ','뮤(대)','greek'],['μ','뮤(소)','greek'],
+['Ν','뉴(대)','greek'],['ν','뉴(소)','greek'],
+['Ξ','크시(대)','greek'],['ξ','크시(소)','greek'],
+['Ο','오미크론(대)','greek'],['ο','오미크론(소)','greek'],
+['Π','파이(대)','greek'],['π','파이(소)','greek'],
+['Ρ','로(대)','greek'],['ρ','로(소)','greek'],
+['Σ','시그마(대)','greek'],['σ','시그마(소)','greek'],['ς','시그마최종','greek'],
+['Τ','타우(대)','greek'],['τ','타우(소)','greek'],
+['Υ','입실론(대)','greek'],['υ','입실론(소)','greek'],
+['Φ','파이(대2)','greek'],['φ','파이(소2)','greek'],
+['Χ','카이(대)','greek'],['χ','카이(소)','greek'],
+['Ψ','프사이(대)','greek'],['ψ','프사이(소)','greek'],
+['Ω','오메가(대)','greek'],['ω','오메가(소)','greek'],
+
+/* ── 가운데점·구분선 ── */
+['·','가운뎃점-중간','dot'],['•','글머리점-큰','dot'],
+['‧','하이픈점','dot'],['∙','수학중간점','dot'],['⋅','곱셈점','dot'],
+['⋮','수직점셋','dot'],['⋯','수평점셋','dot'],
+['⋱','대각선점셋','dot'],['⋰','역대각선점셋','dot'],
+['⊡','사각안점','dot'],['⊙','원안점','dot'],['⊚','이중원점','dot'],
+['⦁','원글머리','dot'],['⁃','하이픈글머리','dot'],
+['∶','비율점','dot'],['∷','비례점','dot'],
+['…','말줄임표','dot'],['‥','두점말줄임','dot'],
+['—','em대시','dot'],['–','en대시','dot'],['‒','피겨대시','dot'],['―','수평바','dot'],
+['‐','하이픈','dot'],['‑','비분절하이픈','dot'],
+['|','수직선','dot'],['‖','이중수직선','dot'],['¦','점선수직선','dot'],
+['∕','나누기슬래시','dot'],['∖','역슬래시(수학)','dot'],
+['~','물결','dot'],['∼','수학물결','dot'],['～','전각물결','dot'],['≀','물결연산자','dot'],
+
+/* ── 로마자 숫자 ── */
+['Ⅰ','로마숫자1(대)','roman'],['Ⅱ','로마숫자2(대)','roman'],
+['Ⅲ','로마숫자3(대)','roman'],['Ⅳ','로마숫자4(대)','roman'],
+['Ⅴ','로마숫자5(대)','roman'],['Ⅵ','로마숫자6(대)','roman'],
+['Ⅶ','로마숫자7(대)','roman'],['Ⅷ','로마숫자8(대)','roman'],
+['Ⅸ','로마숫자9(대)','roman'],['Ⅹ','로마숫자10(대)','roman'],
+['Ⅺ','로마숫자11(대)','roman'],['Ⅻ','로마숫자12(대)','roman'],
+['Ⅼ','로마숫자50(대)','roman'],['Ⅽ','로마숫자100(대)','roman'],
+['Ⅾ','로마숫자500(대)','roman'],['Ⅿ','로마숫자1000(대)','roman'],
+['ⅰ','로마숫자1(소)','roman'],['ⅱ','로마숫자2(소)','roman'],
+['ⅲ','로마숫자3(소)','roman'],['ⅳ','로마숫자4(소)','roman'],
+['ⅴ','로마숫자5(소)','roman'],['ⅵ','로마숫자6(소)','roman'],
+['ⅶ','로마숫자7(소)','roman'],['ⅷ','로마숫자8(소)','roman'],
+['ⅸ','로마숫자9(소)','roman'],['ⅹ','로마숫자10(소)','roman'],
+['ⅺ','로마숫자11(소)','roman'],['ⅻ','로마숫자12(소)','roman'],
+['ⅼ','로마숫자50(소)','roman'],['ⅽ','로마숫자100(소)','roman'],
+['ⅾ','로마숫자500(소)','roman'],['ⅿ','로마숫자1000(소)','roman'],
+['①','원숫자1','roman'],['②','원숫자2','roman'],['③','원숫자3','roman'],
+['④','원숫자4','roman'],['⑤','원숫자5','roman'],['⑥','원숫자6','roman'],
+['⑦','원숫자7','roman'],['⑧','원숫자8','roman'],['⑨','원숫자9','roman'],
+['⑩','원숫자10','roman'],['⑪','원숫자11','roman'],['⑫','원숫자12','roman'],
+['⑬','원숫자13','roman'],['⑭','원숫자14','roman'],['⑮','원숫자15','roman'],
+['⑯','원숫자16','roman'],['⑰','원숫자17','roman'],['⑱','원숫자18','roman'],
+['⑲','원숫자19','roman'],['⑳','원숫자20','roman'],
+['❶','검은원숫자1','roman'],['❷','검은원숫자2','roman'],['❸','검은원숫자3','roman'],
+['❹','검은원숫자4','roman'],['❺','검은원숫자5','roman'],['❻','검은원숫자6','roman'],
+['❼','검은원숫자7','roman'],['❽','검은원숫자8','roman'],['❾','검은원숫자9','roman'],
+['❿','검은원숫자10','roman'],
+
+/* ── 기호·문장부호 ── */
+['©','저작권','symbol'],['®','등록상표','symbol'],['™','상표','symbol'],
+['§','섹션','symbol'],['¶','단락','symbol'],['†','단검','symbol'],['‡','이중단검','symbol'],
+['°','도-각도','symbol'],['‰','퍼밀','symbol'],['‱','만분율','symbol'],
+['¿','역물음표','symbol'],['¡','역느낌표','symbol'],
+['«','왼기메르크','symbol'],['»','오른기메르크','symbol'],
+['‹','왼기메르크소','symbol'],['›','오른기메르크소','symbol'],
+['"','왼큰따옴표','symbol'],['"','오른큰따옴표','symbol'],
+['\u2018','왼작은따옴표','symbol'],['\u2019','오른작은따옴표','symbol'],
+['‚','아래작은따옴표','symbol'],['„','아래큰따옴표','symbol'],
+['「','왼낫표','symbol'],['」','오른낫표','symbol'],
+['『','왼겹낫표','symbol'],['』','오른겹낫표','symbol'],
+['【','왼굵은괄호','symbol'],['】','오른굵은괄호','symbol'],
+['〖','왼흰굵은괄호','symbol'],['〗','오른흰굵은괄호','symbol'],
+['〔','왼거북이괄호','symbol'],['〕','오른거북이괄호','symbol'],
+['〈','왼꺾쇠','symbol'],['〉','오른꺾쇠','symbol'],
+['《','왼겹꺾쇠','symbol'],['》','오른겹꺾쇠','symbol'],
+['※','참고표','symbol'],
+['☞','오른손가락','symbol'],['☜','왼손가락','symbol'],
+['☝','위손가락','symbol'],['☟','아래손가락','symbol'],
+['✂','가위','symbol'],['✉','편지봉투','symbol'],
+['✌','브이사인','symbol'],['✍','글쓰기손','symbol'],
+['☎','구형전화기','symbol'],['✈','비행기','symbol'],
+['⚓','닻','symbol'],['☸','다르마바퀴','symbol'],
+['☯','음양','symbol'],['☮','평화기호','symbol'],
+['♀','여성기호','symbol'],['♂','남성기호','symbol'],
+['⚕','의료기호','symbol'],['☣','생물위험','symbol'],['☢','방사능','symbol'],
+
+/* ── 통화 ── */
+['$','달러','currency'],['€','유로','currency'],['£','파운드','currency'],['¥','엔-위안','currency'],
+['₩','원화','currency'],['₹','루피','currency'],['₫','동-베트남','currency'],['₺','리라','currency'],
+['₴','흐리우냐','currency'],['₽','루블','currency'],['¢','센트','currency'],['₱','페소','currency'],
+['₣','프랑','currency'],['₦','나이라','currency'],['₧','페세타','currency'],
+['₪','셰켈','currency'],['₭','킵','currency'],['₮','투그릭','currency'],
+['₵','세디','currency'],['₸','텡게','currency'],['₼','마나트','currency'],
+['₾','라리','currency'],['₿','비트코인','currency'],
+
+/* ── 괄호 ── */
+['(','왼둥근괄호','bracket'],[')','오른둥근괄호','bracket'],
+['[','왼대괄호','bracket'],[']','오른대괄호','bracket'],
+['{','왼중괄호','bracket'],['}','오른중괄호','bracket'],
+['\u27E8','왼꺾쇠수학','bracket'],['\u27E9','오른꺾쇠수학','bracket'],
+['\u27E6','왼이중대괄호','bracket'],['\u27E7','오른이중대괄호','bracket'],
+['\u27EA','왼이중꺾쇠','bracket'],['\u27EB','오른이중꺾쇠','bracket'],
+['\u2308','왼올림괄호','bracket'],['\u2309','오른올림괄호','bracket'],
+['\u230A','왼내림괄호','bracket'],['\u230B','오른내림괄호','bracket'],
+['\u231C','왼위귀괄호','bracket'],['\u231D','오른위귀괄호','bracket'],
+['\u231E','왼아래귀괄호','bracket'],['\u231F','오른아래귀괄호','bracket'],
+['\u2768','왼굽은괄호','bracket'],['\u2769','오른굽은괄호','bracket'],
+['\u276A','왼납작굽은괄호','bracket'],['\u276B','오른납작굽은괄호','bracket'],
+['\u276C','왼뾰족괄호','bracket'],['\u276D','오른뾰족괄호','bracket'],
+['\u276E','왼굵은꺾쇠','bracket'],['\u276F','오른굵은꺾쇠','bracket'],
+['\u3018','왼흰거북이괄호','bracket'],['\u3019','오른흰거북이괄호','bracket'],
+['\u301A','왼흰대괄호','bracket'],['\u301B','오른흰대괄호','bracket'],
+
+/* ── 이모지형 ── */
+['✓','체크','emoji'],['✔','두꺼운체크','emoji'],['✕','엑스','emoji'],['✖','두꺼운엑스','emoji'],
+['✗','투표엑스','emoji'],['✘','굵은투표엑스','emoji'],
+['☑','체크박스-체크','emoji'],['☒','체크박스-X','emoji'],
+['✅','초록체크박스','emoji'],['❌','빨간X박스','emoji'],['❎','빨간X네모','emoji'],
+['☀','해','emoji'],['☁','구름','emoji'],['☂','우산','emoji'],['☃','눈사람','emoji'],
+['☄','혜성','emoji'],['❄','눈꽃','emoji'],['❅','눈결정','emoji'],['❆','꽃눈','emoji'],
+['⚡','번개','emoji'],['🔥','불꽃','emoji'],['💡','전구아이디어','emoji'],
+['♠','스페이드','emoji'],['♣','클럽','emoji'],['♥','하트카드','emoji'],['♦','다이아카드','emoji'],
+['♪','음표','emoji'],['♫','겹음표','emoji'],['♬','네음표','emoji'],
+['♭','플랫','emoji'],['♮','내추럴','emoji'],['♯','샵','emoji'],
+['⚽','축구공','emoji'],['⚾','야구공','emoji'],['⛄','눈사람모자','emoji'],
+['☕','커피','emoji'],['⛵','요트','emoji'],['✈','비행기','emoji'],
+['⌚','시계','emoji'],['⌛','모래시계','emoji'],['⏰','알람시계','emoji'],
+['☔','비우산','emoji'],['⛅','구름해','emoji'],
+['☺','웃는얼굴','emoji'],['☹','찡그린얼굴','emoji'],['☻','검은웃는얼굴','emoji'],
+
+]; /* end D */
+
+/* ============================================================
+   CATEGORIES
+============================================================ */
+var CATS = [
+  {id:'all',     label:'전체',       icon:'apps'},
+  {id:'pop',     label:'인기',       icon:'star'},
+  {id:'shape',   label:'별·도형',   icon:'category'},
+  {id:'arrow',   label:'화살표',     icon:'trending_flat'},
+  {id:'math',    label:'수학기호',   icon:'functions'},
+  {id:'greek',   label:'그리스문자', icon:'font_download'},
+  {id:'dot',     label:'점·구분선', icon:'more_horiz'},
+  {id:'roman',   label:'로마자숫자', icon:'looks_one'},
+  {id:'symbol',  label:'기호·부호', icon:'tag'},
+  {id:'currency',label:'통화',       icon:'payments'},
+  {id:'bracket', label:'괄호',       icon:'data_array'},
+  {id:'emoji',   label:'이모지형',   icon:'sentiment_satisfied'},
+];
+
+/* ============================================================
+   STATE
+============================================================ */
+var cat = 'pop';
+var q   = '';
+var LS  = 'sb_v3';
+var MAX_R = 12;
+
+/* ============================================================
+   RECENT
+============================================================ */
+function getR() {
+  try { return JSON.parse(localStorage.getItem(LS) || '[]'); }
+  catch(e) { return []; }
+}
+function pushR(c) {
+  var r = getR().filter(function(x){ return x !== c; });
+  r.unshift(c);
+  if (r.length > MAX_R) r = r.slice(0, MAX_R);
+  localStorage.setItem(LS, JSON.stringify(r));
+  renderRecent();
+}
+function renderRecent() {
+  var sec = document.getElementById('recentSec');
+  var g   = document.getElementById('recentGrid');
+  var r   = getR();
+  if (!r.length) { sec.classList.add('hidden'); return; }
+  sec.classList.remove('hidden');
+  g.innerHTML = '';
+  r.forEach(function(c) { g.appendChild(makeCard(c, true)); });
+}
+
+/* ============================================================
+   CARD
+============================================================ */
+function makeCard(c, small) {
+  var b = document.createElement('button');
+  b.className = small ? 'sym-sm' : 'sym-card';
+  b.textContent = c;
+  b.title = c;
+  b.addEventListener('click', function(e) { addRipple(b, e); copyChar(c); });
+  return b;
+}
+
+/* ============================================================
+   RIPPLE
+============================================================ */
+function addRipple(el, e) {
+  var s = document.createElement('span');
+  s.className = 'ripple';
+  var r = el.getBoundingClientRect();
+  var sz = Math.max(r.width, r.height);
+  s.style.width  = sz + 'px';
+  s.style.height = sz + 'px';
+  s.style.left   = (e.clientX - r.left - sz / 2) + 'px';
+  s.style.top    = (e.clientY - r.top  - sz / 2) + 'px';
+  el.appendChild(s);
+  s.addEventListener('animationend', function() { s.remove(); });
+}
+
+/* ============================================================
+   COPY
+============================================================ */
+var toastTimer = null;
+function copyChar(c) {
+  function done() { pushR(c); showToast(c + '  복사 완료!'); }
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(c).then(done).catch(function() { fbCopy(c, done); });
+  } else {
+    fbCopy(c, done);
+  }
+}
+function fbCopy(c, cb) {
+  var ta = document.createElement('textarea');
+  ta.value = c;
+  ta.style.position = 'fixed';
+  ta.style.opacity  = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  ta.remove();
+  cb();
+}
+function showToast(msg) {
+  var el = document.getElementById('toast');
+  document.getElementById('toastTxt').textContent = msg;
+  el.classList.remove('t-out');
+  el.classList.add('t-in');
+  el.style.opacity = '1';
+  el.style.pointerEvents = 'auto';
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() {
+    el.classList.remove('t-in');
+    el.classList.add('t-out');
+    setTimeout(function() {
+      el.style.opacity = '0';
+      el.style.pointerEvents = 'none';
+    }, 290);
+  }, 1800);
+}
+
+/* ============================================================
+   RENDER
+============================================================ */
+function getFiltered() {
+  var qn = q.trim().toLowerCase();
+  var seen = {};
+  var result = [];
+  for (var i = 0; i < D.length; i++) {
+    var entry = D[i];
+    var ch = entry[0], nm = entry[1], ct = entry[2];
+    if (cat !== 'all' && ct !== cat) continue;
+    var key = ch + '_' + ct; // allow same char in different categories
+    if (cat === 'all') key = ch; // dedupe when showing all
+    if (seen[key]) continue;
+    seen[key] = true;
+    if (!qn) { result.push(entry); continue; }
+    if (nm.toLowerCase().indexOf(qn) !== -1 || ch === qn) result.push(entry);
+  }
+  return result;
+}
+
+function renderGrid() {
+  var g   = document.getElementById('grid');
+  var em  = document.getElementById('cnt');
+  var lbl = document.getElementById('countLabel');
+  var emEl= document.getElementById('empty');
+  var data = getFiltered();
+
+  g.innerHTML = '';
+
+  if (!data.length) {
+    emEl.classList.remove('hidden');
+    lbl.textContent = '';
+    return;
+  }
+  emEl.classList.add('hidden');
+  lbl.textContent = data.length + '개';
+
+  var frag = document.createDocumentFragment();
+  for (var i = 0; i < data.length; i++) {
+    var entry = data[i];
+    var b = makeCard(entry[0], false);
+    b.title = entry[0] + '  ' + entry[1];
+    frag.appendChild(b);
+  }
+  g.appendChild(frag);
+}
+
+/* ============================================================
+   TABS
+============================================================ */
+function renderTabs() {
+  var t = document.getElementById('tabs');
+  t.innerHTML = '';
+  CATS.forEach(function(c) {
+    var b = document.createElement('button');
+    var isActive = (c.id === cat);
+    b.className = 'tab-btn flex items-center gap-1 px-3 py-2.5 text-xs font-semibold text-gray-500' + (isActive ? ' on' : '');
+    b.innerHTML = '<span class="material-icons" style="font-size:14px">' + c.icon + '</span>' + c.label;
+    b.addEventListener('click', function() {
+      cat = c.id;
+      document.querySelectorAll('.tab-btn').forEach(function(x) { x.classList.remove('on'); });
+      b.classList.add('on');
+      renderGrid();
+    });
+    t.appendChild(b);
+  });
+}
+
+/* ============================================================
+   SEARCH
+============================================================ */
+document.getElementById('q').addEventListener('input', function(e) {
+  q = e.target.value;
+  renderGrid();
+});
+
+/* ============================================================
+   INIT
+============================================================ */
+renderTabs();
+renderGrid();
+renderRecent();
+</script>
+</body>
+</html>
