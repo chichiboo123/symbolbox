@@ -1,4 +1,4 @@
-const CACHE = 'symbolbox-v1';
+const CACHE = 'symbolbox-v2';
 const ASSETS = [
   './',
   './index.html',
