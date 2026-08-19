@@ -1,293 +1,1067 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SymbolBox · 여기 있어 특수문자</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f46e5'/%3E%3Crect x='4' y='4' width='10' height='10' rx='2.5' fill='white'/%3E%3Crect x='18' y='4' width='10' height='10' rx='2.5' fill='white'/%3E%3Crect x='4' y='18' width='10' height='10' rx='2.5' fill='white'/%3E%3Crect x='18' y='18' width='10' height='10' rx='2.5' fill='white'/%3E%3C/svg%3E"/>
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="icons/icon-any-192.png" />
-  <meta name="theme-color" content="#4f46e5" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="SymbolBox" />
-  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-gov.min.css" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    * { font-family: "Pretendard GOV", sans-serif; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>SymbolBox · 여기 있어 특수문자</title>
+<meta name="description" content="복사 한 번으로 끝내는 특수문자 모음집. 3,100여 종의 특수문자·기호·이모지를 분류별로 찾고, 문서·PDF에서 깨지지 않는 안전한 문자인지 바로 확인하세요." />
+<meta name="author" content="교육뮤지컬 꿈꾸는 치수쌤" />
+<meta name="color-scheme" content="light dark" />
 
-    @keyframes slideUp { from { transform: translateY(14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
-    .t-in  { animation: slideUp .22s ease forwards; }
-    .t-out { animation: fadeOut .28s ease forwards; }
+<meta property="og:type" content="website" />
+<meta property="og:title" content="SymbolBox · 여기 있어 특수문자" />
+<meta property="og:description" content="복사 한 번으로 끝내는 특수문자 모음집 — 문서·PDF 호환성까지 확인해 주는 특수문자 도구" />
+<meta property="og:url" content="https://symbolbox.chichiboo.link/" />
+<meta property="og:locale" content="ko_KR" />
+<meta name="twitter:card" content="summary" />
 
-    /* Symbol card */
-    .sym-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      position: relative;
-      overflow: hidden;
-      background: #fff;
-      border: 1px solid #f3f4f6;
-      border-radius: 0.75rem;
-      width: 100%;
-      height: 88px;
-      font-size: 1.75rem;
-      cursor: pointer;
-      user-select: none;
-      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, color .12s ease;
-    }
-    .sym-card:hover  { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.09); border-color: #a5b4fc; color: #4f46e5; }
-    .sym-card:active { transform: translateY(0); }
-    .sym-card:focus  { outline: none; box-shadow: 0 0 0 3px rgba(99,102,241,.35); }
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23006DD2'/%3E%3Crect x='4.5' y='4.5' width='9.5' height='9.5' rx='2.5' fill='white'/%3E%3Crect x='18' y='4.5' width='9.5' height='9.5' rx='2.5' fill='%23BFD9F2'/%3E%3Crect x='4.5' y='18' width='9.5' height='9.5' rx='2.5' fill='%23BFD9F2'/%3E%3Crect x='18' y='18' width='9.5' height='9.5' rx='2.5' fill='white'/%3E%3C/svg%3E"/>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icons/icon-any-192.png" />
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#006DD2" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0F1216" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="SymbolBox" />
 
-    .sym-name {
-      font-size: 10px;
-      color: #bbbfc5;
-      line-height: 1;
-      max-width: calc(100% - 6px);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      transition: color .12s ease;
-      pointer-events: none;
-    }
-    .sym-card:hover .sym-name { color: #818cf8; }
+<!-- ── 폰트 ───────────────────────────────────────────────────────────────
+     본문:  Pretendard GOV (공공서체)
+     글리프 폴백: Noto Sans Symbols / Symbols 2 / Math / Music
+                 → 기기에 글꼴이 없어 두부(□)로 깨지는 문제를 막는 안전망
+     이모지 폴백: Tossface — 구형 기기에서 최신 이모지가 비어 보이는 것 방지
+     Google Fonts는 unicode-range 서브셋으로 제공되어, 실제로 쓰인 구간만
+     내려받으므로 초기 로딩에 부담을 주지 않습니다.
+──────────────────────────────────────────────────────────────────────── -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-gov.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined&amp;display=block" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2&family=Noto+Sans+Symbols:wght@400&family=Noto+Sans+Math&family=Noto+Music&display=swap" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/toss/tossface/dist/tossface.css" />
 
-    /* Small card (recent) */
-    .sym-sm {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      background: #fff;
-      border: 1px solid #f3f4f6;
-      border-radius: 0.5rem;
-      width: 44px;
-      height: 44px;
-      font-size: 1.15rem;
-      cursor: pointer;
-      user-select: none;
-      transition: border-color .12s, color .12s, box-shadow .12s;
-    }
-    .sym-sm:hover { border-color: #a5b4fc; color: #4f46e5; box-shadow: 0 4px 12px rgba(99,102,241,.15); }
-    .sym-sm:focus { outline: none; box-shadow: 0 0 0 3px rgba(99,102,241,.35); }
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   SymbolBox v2.0 — 디자인 토큰 (KRDS 팔레트 기반 + 치수쌤 파스텔 확장)
+══════════════════════════════════════════════════════════════════════ */
+:root{
+  /* KRDS 기본 */
+  --c-primary:#006DD2; --c-primary-hover:#0056A8; --c-primary-light:#E8F3FF;
+  --c-secondary:#00A68A;
+  --c-error:#D32F2F; --c-warning:#F57C00; --c-success:#388E3C;
 
-    /* Tab scroll fade */
-    .tabs-wrap { position: relative; }
-    .tabs-wrap::after {
-      content: '';
-      position: absolute;
-      right: 0; top: 0; bottom: 0;
-      width: 32px;
-      background: linear-gradient(to right, transparent, #f3f4f6);
-      pointer-events: none;
-    }
+  /* 치수쌤 파스텔 */
+  --pastel-blue:#BFD9F2; --pastel-green:#C8EDD9; --pastel-yellow:#FFF3B0; --pastel-pink:#FFD6E0;
+  --pastel-blue-d:#1A5F8A; --pastel-green-d:#1A6B47; --pastel-yellow-d:#7A6000; --pastel-pink-d:#8A2840;
 
-    /* Ripple */
-    .ripple { position: absolute; border-radius: 50%; background: rgba(99,102,241,.22); transform: scale(0); animation: rpl .45s linear; pointer-events: none; }
-    @keyframes rpl { to { transform: scale(4); opacity: 0; } }
+  /* 무채색 */
+  --g900:#1A1A1A; --g700:#404040; --g500:#767676; --g300:#B2B2B2; --g100:#F5F5F5; --white:#fff;
 
-    /* Tabs */
-    .tab-btn { border-bottom: 2px solid transparent; transition: color .15s, border-color .15s; flex-shrink: 0; white-space: nowrap; }
-    .tab-btn.on { color: #4f46e5; border-bottom-color: #4f46e5; }
+  /* 시맨틱 (라이트) */
+  --bg:#F2F5F8;
+  --surface:#FFFFFF;
+  --surface-2:#F8FAFC;
+  --surface-3:#EEF2F6;
+  --border:#E1E7ED;
+  --border-2:#CBD4DE;
+  --text:#1A1A1A;
+  --text-2:#404040;
+  --text-3:#767676;
+  --text-4:#A0A9B4;
+  --accent:var(--c-primary);
+  --accent-weak:var(--c-primary-light);
+  --ring:rgba(0,109,210,.28);
+  --shadow-1:0 1px 2px rgba(16,24,40,.06);
+  --shadow-2:0 6px 20px rgba(16,24,40,.10);
+  --shadow-3:0 16px 44px rgba(16,24,40,.18);
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { height: 4px; width: 4px; }
-    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+  /* 반지름·간격 */
+  --r-sm:6px; --r-md:10px; --r-lg:16px; --r-xl:22px;
+  --sp-xs:4px; --sp-sm:8px; --sp-md:16px; --sp-lg:24px; --sp-xl:40px;
 
-    /* ── 문서작성 탭 전용 스타일 ── */
-    .doc-section {
-      background: #fff;
-      border: 1px solid #f3f4f6;
-      border-radius: 1rem;
-      padding: 1rem 1.25rem 1.25rem;
-      margin-bottom: 1rem;
-    }
-    .doc-section-header {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid #f3f4f6;
-    }
-    .doc-section-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: #6b7280;
-      letter-spacing: 0.04em;
-    }
-    .doc-section-badge {
-      font-size: 10px;
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-weight: 500;
-    }
-    .badge-rule   { background: #ede9fe; color: #5b21b6; }
-    .badge-opt    { background: #d1fae5; color: #065f46; }
-    .badge-unit   { background: #fef3c7; color: #92400e; }
-    .badge-punct  { background: #e0f2fe; color: #0c4a6e; }
-    .badge-num    { background: #fce7f3; color: #9d174d; }
-    .badge-etc    { background: #f1f5f9; color: #475569; }
+  /* 카드 크기 — 설정(작게/보통/크게) × 화면 폭에 따라 결정됩니다 */
+  --card-w:80px; --card-h:84px; --card-fs:1.7rem;
 
-    /* 항목 순서 시각화 */
-    .seq-flow {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex-wrap: wrap;
-      margin-bottom: 0.75rem;
-      padding: 0.6rem 0.75rem;
-      background: #fafafa;
-      border-radius: 0.5rem;
-      border: 1px solid #f3f4f6;
-    }
-    .seq-chip {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-    .seq-chip-sym {
-      font-size: 15px;
-      font-weight: 600;
-      color: #4f46e5;
-      line-height: 1;
-    }
-    .seq-chip-label {
-      font-size: 9px;
-      color: #9ca3af;
-    }
-    .seq-arrow {
-      font-size: 12px;
-      color: #d1d5db;
-      margin: 0 1px;
-      align-self: flex-start;
-      margin-top: 6px;
-    }
+  /* 폰트 */
+  --font-ui:'Pretendard GOV','Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
 
-    /* 문서작성 카드 */
-    .doc-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      position: relative;
-      overflow: hidden;
-      background: #fafafa;
-      border: 1px solid #f3f4f6;
-      border-radius: 0.65rem;
-      width: 100%;
-      height: 72px;
-      font-size: 1.5rem;
-      cursor: pointer;
-      user-select: none;
-      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease, color .12s ease;
-    }
-    .doc-card:hover  { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.08); border-color: #a5b4fc; background: #fff; color: #4f46e5; }
-    .doc-card:active { transform: translateY(0); }
-    .doc-card:focus  { outline: none; box-shadow: 0 0 0 3px rgba(99,102,241,.35); }
-    .doc-card .sym-name { color: #c4c8ce; }
-    .doc-card:hover .sym-name { color: #818cf8; }
+  /* 글리프 전용 스택 — 흑백(텍스트) 글꼴을 먼저, 컬러 이모지 글꼴을 마지막에 두어
+     화면에 보이는 모습이 한글·워드에 붙여넣은 모습과 최대한 같아지도록 합니다. */
+  --font-glyph:
+    'Pretendard GOV','Pretendard',
+    'Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',
+    'Segoe UI Symbol','Apple Symbols','Segoe UI Historic',
+    'Noto Sans Symbols 2','Noto Sans Symbols','Noto Sans Math','Noto Music',
+    'Noto Sans KR','Noto Sans CJK KR','Batang','바탕','Gulim','굴림',
+    'DejaVu Sans','FreeSerif','Symbola',
+    'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji','Tossface',
+    sans-serif;
 
-    .doc-grid {
-      display: grid;
-      gap: 6px;
-      grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
-    }
-  </style>
+  /* 이모지 전용 — 컬러 글꼴 우선 */
+  --font-emoji:
+    'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji','Tossface',
+    'Segoe UI Symbol','Noto Sans Symbols 2',sans-serif;
+
+  /* 문서 미리보기용 (상세 시트) */
+  --font-serif:'Batang','바탕','함초롬바탕','HCR Batang','Apple SD Gothic Neo','Noto Serif KR',serif;
+  --font-gothic:'Malgun Gothic','맑은 고딕','함초롬돋움','Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+}
+
+html[data-size="s"]{ --card-w:66px; --card-h:72px; --card-fs:1.45rem; }
+html[data-size="l"]{ --card-w:98px; --card-h:100px; --card-fs:2.1rem; }
+@media (max-width:520px){
+  :root{ --card-w:70px; --card-h:78px; --card-fs:1.55rem; }
+  html[data-size="s"]{ --card-w:58px; --card-h:66px; --card-fs:1.3rem; }
+  html[data-size="l"]{ --card-w:92px; --card-h:96px; --card-fs:2rem; }
+}
+
+[data-theme="dark"]{
+  --bg:#0E1116;
+  --surface:#171B22;
+  --surface-2:#1C212A;
+  --surface-3:#232935;
+  --border:#293140;
+  --border-2:#3A4353;
+  --text:#E9EDF2;
+  --text-2:#C3CBD6;
+  --text-3:#8E99A8;
+  --text-4:#69737F;
+  --accent:#4DA3FF;
+  --accent-weak:#12293F;
+  --ring:rgba(77,163,255,.32);
+  --shadow-1:0 1px 2px rgba(0,0,0,.4);
+  --shadow-2:0 6px 20px rgba(0,0,0,.45);
+  --shadow-3:0 16px 44px rgba(0,0,0,.6);
+  --pastel-blue:#1E3A52; --pastel-green:#173D30; --pastel-yellow:#3D3416; --pastel-pink:#3E2029;
+  --pastel-blue-d:#9CC8EC; --pastel-green-d:#8FD8B6; --pastel-yellow-d:#E8CE72; --pastel-pink-d:#F0A6B8;
+  --c-primary-light:#12293F;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   기본
+══════════════════════════════════════════════════════════════════════ */
+*,*::before,*::after{ box-sizing:border-box; }
+[hidden]{ display:none !important; }
+html,body,h1,h2,h3,p,ul,ol,li,figure,button,input,textarea{ margin:0; padding:0; }
+html{ -webkit-text-size-adjust:100%; }
+body{
+  font-family:var(--font-ui);
+  font-size:16px; line-height:1.6;
+  color:var(--text); background:var(--bg);
+  min-height:100dvh; display:flex; flex-direction:column;
+  -webkit-font-smoothing:antialiased;
+  overflow-wrap:anywhere;
+}
+button{ font-family:inherit; font-size:inherit; color:inherit; background:none; border:none; cursor:pointer; }
+input,textarea{ font-family:inherit; font-size:inherit; color:inherit; }
+a{ color:inherit; }
+ul,ol{ list-style:none; }
+
+:where(button,a,input,textarea,[tabindex]):focus-visible{
+  outline:2px solid var(--accent); outline-offset:2px; border-radius:var(--r-sm);
+}
+
+.skip-link{
+  position:absolute; left:-9999px; top:0; z-index:200;
+  background:var(--accent); color:#fff; padding:10px 16px; border-radius:0 0 var(--r-md) 0; font-weight:700;
+}
+.skip-link:focus{ left:0; }
+
+.mi{
+  font-family:'Material Icons Outlined'; font-weight:400; font-style:normal;
+  line-height:1; letter-spacing:normal; text-transform:none; white-space:nowrap;
+  display:inline-block; direction:ltr; word-wrap:normal;
+  -webkit-font-feature-settings:'liga'; font-feature-settings:'liga';
+  -webkit-font-smoothing:antialiased; font-size:20px; flex:none;
+  /* 아이콘 폰트가 아직 안 뜬 동안 'search_off' 같은 리터럴 문자가
+     레이아웃을 밀어내지 않도록 글리프 한 칸(1em)으로 가둡니다. */
+  width:1em; height:1em; overflow:hidden; text-align:center;
+  /* 리가처가 실제로 적용된 것을 확인하기 전까지는 숨깁니다.
+     visibility 라서 자리는 그대로 잡혀 레이아웃이 흔들리지 않습니다. */
+  visibility:hidden;
+}
+html.mi-ok .mi{ visibility:visible; }
+
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   헤더
+══════════════════════════════════════════════════════════════════════ */
+.app-head{
+  position:sticky; top:0; z-index:60;
+  background:color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter:saturate(160%) blur(12px);
+  -webkit-backdrop-filter:saturate(160%) blur(12px);
+  border-bottom:1px solid var(--border);
+  padding-top:env(safe-area-inset-top);
+}
+@supports not (backdrop-filter:blur(1px)){ .app-head{ background:var(--surface); } }
+
+.head-inner{
+  max-width:1320px; margin:0 auto;
+  padding:10px var(--sp-md);
+  display:flex; align-items:center; gap:10px;
+}
+
+.brand{ display:flex; align-items:center; gap:8px; flex:none; text-decoration:none; }
+.brand-mark{
+  width:32px; height:32px; border-radius:9px; flex:none;
+  background:linear-gradient(135deg,var(--c-primary),#3FA0F0);
+  display:grid; place-items:center; color:#fff; box-shadow:var(--shadow-1);
+}
+.brand-mark .mi{ font-size:19px; }
+.brand-name{ font-size:1.25rem; font-weight:800; letter-spacing:-.02em; line-height:1.1; }
+.brand-ver{
+  font-size:10px; font-weight:700; letter-spacing:.02em;
+  color:var(--accent); background:var(--accent-weak);
+  padding:2px 6px; border-radius:999px; align-self:center;
+}
+@media (max-width:600px){ .brand-name,.brand-ver{ display:none; } }
+
+.search{ position:relative; flex:1 1 auto; min-width:0; }
+.search .mi.lead{
+  position:absolute; left:11px; top:50%; transform:translateY(-50%);
+  font-size:19px; color:var(--text-4); pointer-events:none;
+}
+.search input{
+  width:100%; height:42px; padding:0 40px 0 38px;
+  border:1px solid var(--border); border-radius:var(--r-xl);
+  background:var(--surface-2); font-size:15px; outline:none;
+  transition:border-color .15s, box-shadow .15s, background .15s;
+}
+.search input::placeholder{ color:var(--text-4); }
+.search input:focus{ border-color:var(--accent); background:var(--surface); box-shadow:0 0 0 3px var(--ring); }
+.search-clear{
+  position:absolute; right:6px; top:50%; transform:translateY(-50%);
+  width:30px; height:30px; border-radius:50%;
+  display:grid; place-items:center; color:var(--text-3);
+}
+.search-clear:hover{ background:var(--surface-3); color:var(--text); }
+.search-clear[hidden]{ display:none; }
+
+.head-actions{ display:flex; align-items:center; gap:2px; flex:none; }
+.icon-btn{
+  width:38px; height:38px; border-radius:var(--r-md);
+  display:grid; place-items:center; color:var(--text-2);
+  transition:background .15s, color .15s;
+}
+.icon-btn:hover{ background:var(--surface-3); color:var(--text); }
+.icon-btn.on{ background:var(--accent-weak); color:var(--accent); }
+
+/* ── 탭 ── */
+.tabs-scroller{
+  max-width:1320px; margin:0 auto; padding:0 var(--sp-md) 8px;
+  overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch;
+}
+.tabs-scroller::-webkit-scrollbar{ display:none; }
+.tabs{ display:flex; align-items:center; gap:5px; width:max-content; min-width:100%; }
+.tab{
+  display:inline-flex; align-items:center; gap:5px; flex:none;
+  height:34px; padding:0 12px; border-radius:999px;
+  font-size:13px; font-weight:600; color:var(--text-3);
+  border:1px solid transparent; background:var(--surface-2);
+  transition:background .15s, color .15s, border-color .15s;
+  white-space:nowrap;
+}
+.tab .mi{ font-size:16px; }
+.tab:hover{ color:var(--text); background:var(--surface-3); }
+.tab[aria-pressed="true"]{
+  color:#fff; background:var(--accent); border-color:var(--accent);
+  box-shadow:0 2px 8px var(--ring);
+}
+.tab-count{
+  font-size:10px; font-weight:700; opacity:.7;
+  padding:1px 5px; border-radius:999px; background:rgba(0,0,0,.06);
+}
+[data-theme="dark"] .tab-count{ background:rgba(255,255,255,.08); }
+.tab[aria-pressed="true"] .tab-count{ background:rgba(255,255,255,.22); opacity:1; }
+.tab-sep{ width:1px; height:18px; background:var(--border-2); flex:none; margin:0 3px; }
+
+@media (max-width:1023px){
+  .tabs-scroller{
+    -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 26px),transparent);
+    mask-image:linear-gradient(to right,#000 calc(100% - 26px),transparent);
+  }
+}
+@media (min-width:1024px){
+  .tabs-scroller{ overflow-x:visible; }
+  .tabs{ flex-wrap:wrap; width:auto; row-gap:6px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   본문
+══════════════════════════════════════════════════════════════════════ */
+main{
+  flex:1; width:100%; max-width:1320px; margin:0 auto;
+  padding:14px var(--sp-md) 120px;
+}
+
+.panel{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r-lg); padding:12px 14px; margin-bottom:12px;
+  box-shadow:var(--shadow-1);
+}
+.panel-head{
+  display:flex; align-items:center; gap:6px; margin-bottom:10px;
+}
+.panel-title{
+  font-size:12px; font-weight:700; letter-spacing:.06em;
+  color:var(--text-3); text-transform:uppercase;
+  display:flex; align-items:center; gap:5px;
+}
+.panel-title .mi{ font-size:15px; }
+.panel-action{
+  margin-left:auto; display:inline-flex; align-items:center; gap:3px;
+  font-size:12px; color:var(--text-4); transition:color .15s;
+}
+.panel-action:hover{ color:var(--c-error); }
+.panel-action .mi{ font-size:14px; }
+
+.chip-row{ display:flex; flex-wrap:wrap; gap:6px; }
+
+/* ── 툴바 ── */
+.toolbar{
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+  margin-bottom:10px; min-height:34px;
+}
+.count-label{ font-size:12px; color:var(--text-3); font-variant-numeric:tabular-nums; }
+.toolbar-spacer{ flex:1 1 auto; }
+
+.switch{
+  display:inline-flex; align-items:center; gap:7px; cursor:pointer;
+  font-size:12px; font-weight:600; color:var(--text-2);
+  padding:5px 10px 5px 8px; border-radius:999px;
+  border:1px solid var(--border); background:var(--surface);
+  transition:border-color .15s, background .15s, color .15s;
+  user-select:none;
+}
+.switch:hover{ border-color:var(--border-2); }
+.switch input{ position:absolute; opacity:0; width:0; height:0; }
+.switch-track{
+  width:30px; height:17px; border-radius:999px; background:var(--border-2);
+  position:relative; transition:background .18s; flex:none;
+}
+.switch-track::after{
+  content:''; position:absolute; top:2px; left:2px;
+  width:13px; height:13px; border-radius:50%; background:#fff;
+  transition:transform .18s; box-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+.switch input:checked + .switch-track{ background:var(--c-success); }
+.switch input:checked + .switch-track::after{ transform:translateX(13px); }
+.switch:has(input:checked){ border-color:var(--c-success); color:var(--c-success); background:color-mix(in srgb,var(--c-success) 8%, var(--surface)); }
+.switch input:focus-visible + .switch-track{ outline:2px solid var(--accent); outline-offset:2px; }
+.switch.bag:has(input:checked){ border-color:var(--c-primary); color:var(--accent); background:var(--accent-weak); }
+.switch.bag input:checked + .switch-track{ background:var(--c-primary); }
+
+.seg{
+  display:inline-flex; border:1px solid var(--border); border-radius:999px;
+  background:var(--surface); overflow:hidden; flex:none;
+}
+.seg button{
+  padding:5px 10px; font-size:12px; font-weight:600; color:var(--text-3);
+  transition:background .15s,color .15s;
+}
+.seg button + button{ border-left:1px solid var(--border); }
+.seg button[aria-pressed="true"]{ background:var(--accent-weak); color:var(--accent); }
+
+.hint{
+  font-size:11px; color:var(--text-4); display:flex; align-items:center; gap:4px;
+}
+.hint .mi{ font-size:13px; }
+.hint.mobile-only{ display:none; }
+@media (max-width:720px){
+  .hint.desktop-only{ display:none; }
+  .hint.mobile-only{ display:flex; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   문자 카드
+══════════════════════════════════════════════════════════════════════ */
+.grid{
+  display:grid; gap:7px;
+  grid-template-columns:repeat(auto-fill,minmax(var(--card-w),1fr));
+}
+
+.card{
+  position:relative; overflow:hidden;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+  width:100%; height:var(--card-h);
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r-md);
+  user-select:none; -webkit-user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  touch-action:manipulation; cursor:pointer;
+}
+.card:hover{ transform:translateY(-2px); box-shadow:var(--shadow-2); border-color:var(--accent); }
+.card:active{ transform:translateY(0) scale(.97); }
+.card.picked{ border-color:var(--c-primary); background:var(--accent-weak); }
+
+.card-glyph{
+  font-family:var(--font-glyph);
+  font-variant-emoji:text;
+  font-size:var(--card-fs); line-height:1.15;
+  color:var(--text);
+  max-width:100%; overflow:hidden;
+  display:block; text-align:center;
+}
+.card-glyph.emoji{ font-family:var(--font-emoji); font-variant-emoji:emoji; }
+.card:hover .card-glyph{ color:var(--accent); }
+.card.picked .card-glyph{ color:var(--accent); }
+
+.card-name{
+  font-size:10px; line-height:1.15; color:var(--text-4);
+  max-width:calc(100% - 8px);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  pointer-events:none;
+}
+.card:hover .card-name{ color:var(--text-3); }
+
+/* 호환 등급 점 — 좌상단 */
+.card-dot{
+  position:absolute; top:5px; left:5px;
+  width:6px; height:6px; border-radius:50%;
+  pointer-events:none; opacity:.85;
+}
+.dot-A{ background:var(--c-success); }
+.dot-B{ background:#D9A400; }
+.dot-C{ background:var(--c-error); }
+body:not(.show-grade) .card-dot{ display:none; }
+
+/* 즐겨찾기 별 — 우상단 */
+.card-fav{
+  position:absolute; top:2px; right:2px;
+  width:22px; height:22px; display:grid; place-items:center;
+  color:var(--text-4); opacity:0; transition:opacity .15s, color .15s;
+  border-radius:50%;
+}
+.card-fav .mi{ font-size:14px; }
+.card:hover .card-fav, .card:focus-within .card-fav{ opacity:1; }
+.card-fav.on{ opacity:1; color:#F5B301; }
+.card-fav:hover{ color:#F5B301; background:var(--surface-3); }
+@media (hover:none){ .card-fav{ opacity:.38; } }
+
+/* 작은 칩 카드 (최근·즐겨찾기·담은 문자) */
+.chip{
+  position:relative; display:inline-flex; align-items:center; justify-content:center;
+  width:42px; height:42px; flex:none;
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md);
+  font-family:var(--font-glyph); font-variant-emoji:text; font-size:1.15rem;
+  transition:border-color .12s, box-shadow .12s, transform .12s;
+  -webkit-tap-highlight-color:transparent;
+}
+.chip:hover{ border-color:var(--accent); color:var(--accent); box-shadow:var(--shadow-1); transform:translateY(-1px); }
+.chip.emoji{ font-family:var(--font-emoji); font-variant-emoji:emoji; }
+
+/* 리플 */
+.ripple{
+  position:absolute; border-radius:50%; background:var(--ring);
+  transform:scale(0); animation:rpl .5s linear; pointer-events:none;
+}
+@keyframes rpl{ to{ transform:scale(3.6); opacity:0; } }
+
+/* ══════════════════════════════════════════════════════════════════════
+   섹션 뷰 (문서작성 · 도형 · 이모지 등)
+══════════════════════════════════════════════════════════════════════ */
+.section{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r-lg); padding:12px 14px 14px; margin-bottom:10px;
+  box-shadow:var(--shadow-1);
+}
+.section-head{
+  display:flex; align-items:center; gap:7px;
+  padding-bottom:9px; margin-bottom:11px;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+}
+.section-head .mi.lead{ font-size:17px; color:var(--accent); }
+.section-title{ font-size:14px; font-weight:700; color:var(--text); }
+.section-note{ font-size:11px; color:var(--text-4); margin:-4px 0 9px; }
+.badge{
+  font-size:10px; font-weight:700; padding:2px 7px; border-radius:999px;
+  background:var(--surface-3); color:var(--text-3); flex:none;
+}
+.badge-rule{ background:var(--pastel-blue); color:var(--pastel-blue-d); }
+.badge-opt{ background:var(--pastel-green); color:var(--pastel-green-d); }
+.badge-unit{ background:var(--pastel-yellow); color:var(--pastel-yellow-d); }
+.badge-punct{ background:var(--pastel-blue); color:var(--pastel-blue-d); }
+.badge-num{ background:var(--pastel-pink); color:var(--pastel-pink-d); }
+.badge-etc{ background:var(--surface-3); color:var(--text-3); }
+.section-toggle{ margin-left:auto; color:var(--text-4); display:grid; place-items:center; transition:transform .2s; }
+.section.collapsed .section-toggle{ transform:rotate(-90deg); }
+.section.collapsed .section-body{ display:none; }
+.section.collapsed .section-head{ border-bottom-color:transparent; margin-bottom:0; padding-bottom:0; }
+
+/* 공문서 항목 순서 흐름도 */
+.seq-flow{
+  display:flex; align-items:flex-start; gap:3px; flex-wrap:wrap;
+  margin-bottom:12px; padding:10px 12px;
+  background:var(--surface-2); border:1px solid var(--border); border-radius:var(--r-md);
+}
+.seq-chip{ display:flex; flex-direction:column; align-items:center; gap:2px; min-width:34px; }
+.seq-sym{ font-family:var(--font-glyph); font-size:15px; font-weight:700; color:var(--accent); line-height:1.2; }
+.seq-label{ font-size:9px; color:var(--text-4); }
+.seq-arrow{ font-size:12px; color:var(--text-4); margin-top:3px; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   빈 상태 / 더보기
+══════════════════════════════════════════════════════════════════════ */
+.empty{ text-align:center; padding:56px 20px; color:var(--text-4); }
+.empty .mi{ font-size:44px; display:block; margin-bottom:10px; }
+.empty p{ font-size:14px; margin-bottom:4px; }
+.empty small{ font-size:12px; color:var(--text-4); }
+.empty .btn{ margin:14px auto 0; }
+
+.sentinel{ height:1px; }
+.loading-more{ text-align:center; padding:16px; font-size:12px; color:var(--text-4); }
+
+/* ══════════════════════════════════════════════════════════════════════
+   버튼
+══════════════════════════════════════════════════════════════════════ */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:5px;
+  padding:9px 15px; border-radius:var(--r-md);
+  font-size:14px; font-weight:600; border:1px solid transparent;
+  transition:background .15s, color .15s, border-color .15s;
+}
+.btn .mi{ font-size:17px; }
+.btn-primary{ background:var(--c-primary); color:#fff; }
+.btn-primary:hover{ background:var(--c-primary-hover); }
+.btn-ghost{ background:var(--surface-2); color:var(--text-2); border-color:var(--border); }
+.btn-ghost:hover{ background:var(--surface-3); color:var(--text); }
+.btn-sm{ padding:6px 11px; font-size:12.5px; border-radius:var(--r-sm); }
+.btn-block{ width:100%; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   모아담기 트레이
+══════════════════════════════════════════════════════════════════════ */
+.tray{
+  position:fixed; left:0; right:0; bottom:0; z-index:70;
+  background:var(--surface); border-top:1px solid var(--border);
+  box-shadow:0 -8px 28px rgba(16,24,40,.14);
+  padding:10px var(--sp-md) calc(10px + env(safe-area-inset-bottom));
+  transform:translateY(110%); transition:transform .25s cubic-bezier(.2,.8,.2,1);
+}
+.tray.open{ transform:translateY(0); }
+.tray-inner{ max-width:1320px; margin:0 auto; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.tray-items{
+  display:flex; gap:5px; flex:1 1 260px; min-width:0;
+  overflow-x:auto; padding-bottom:2px; scrollbar-width:thin;
+}
+.tray-empty{ font-size:12.5px; color:var(--text-4); padding:12px 2px; }
+.tray-actions{ display:flex; align-items:center; gap:6px; flex:none; }
+.tray-sep{
+  font-size:12px; border:1px solid var(--border); border-radius:var(--r-sm);
+  background:var(--surface-2); padding:6px 8px; color:var(--text-2);
+}
+@media (max-width:640px){
+  .tray-inner{ flex-direction:column; align-items:stretch; gap:8px; }
+  .tray-items{ flex:1 1 auto; max-height:52px; }
+  .tray-actions{ display:flex; }
+  .tray-actions #trayCopy{ flex:1; }
+  .tray-sep{ flex:none; }
+}
+
+/* 위로 가기 */
+.to-top{
+  position:fixed; right:16px; bottom:calc(20px + env(safe-area-inset-bottom)); z-index:55;
+  width:42px; height:42px; border-radius:50%;
+  background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow-2);
+  display:grid; place-items:center; color:var(--text-2);
+  opacity:0; pointer-events:none; transform:translateY(10px);
+  transition:opacity .2s, transform .2s;
+}
+.to-top.show{ opacity:1; pointer-events:auto; transform:translateY(0); }
+body.tray-open .to-top{ bottom:calc(88px + env(safe-area-inset-bottom)); }
+
+/* ══════════════════════════════════════════════════════════════════════
+   토스트
+══════════════════════════════════════════════════════════════════════ */
+.toast{
+  position:fixed; left:50%; bottom:26px; z-index:120;
+  transform:translate(-50%,16px); opacity:0; pointer-events:none;
+  transition:opacity .22s, transform .22s;
+  max-width:calc(100vw - 32px);
+}
+.toast.show{ opacity:1; transform:translate(-50%,0); }
+body.tray-open .toast{ bottom:100px; }
+.toast-inner{
+  display:flex; align-items:center; gap:8px;
+  background:var(--g900); color:#fff; font-size:14px; font-weight:600;
+  padding:11px 18px; border-radius:var(--r-xl); box-shadow:var(--shadow-3);
+}
+[data-theme="dark"] .toast-inner{ background:#F1F4F8; color:#12161C; }
+.toast-inner .mi{ font-size:18px; color:#6EE7A8; }
+[data-theme="dark"] .toast-inner .mi{ color:var(--c-success); }
+.toast-inner .glyph{ font-family:var(--font-glyph); font-size:17px; }
+.toast.warn .toast-inner .mi{ color:#FFC663; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   모달 · 바텀시트
+══════════════════════════════════════════════════════════════════════ */
+.overlay{
+  position:fixed; inset:0; z-index:100;
+  background:rgba(12,18,26,.5); backdrop-filter:blur(2px);
+  display:flex; align-items:center; justify-content:center; padding:20px;
+  opacity:0; pointer-events:none; transition:opacity .2s;
+}
+.overlay.open{ opacity:1; pointer-events:auto; }
+
+.dialog{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r-lg); box-shadow:var(--shadow-3);
+  width:100%; max-width:520px; max-height:88dvh;
+  display:flex; flex-direction:column;
+  transform:translateY(12px) scale(.98); transition:transform .22s;
+}
+.overlay.open .dialog{ transform:none; }
+.dialog.wide{ max-width:680px; }
+
+.dialog-head{
+  display:flex; align-items:center; gap:8px;
+  padding:14px 16px; border-bottom:1px solid var(--border);
+}
+.dialog-title{ font-size:1rem; font-weight:700; display:flex; align-items:center; gap:6px; }
+.dialog-title .mi{ font-size:19px; color:var(--accent); }
+.dialog-body{ padding:16px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+.dialog-foot{
+  padding:12px 16px; border-top:1px solid var(--border);
+  display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap;
+}
+
+@media (max-width:560px){
+  .overlay{ align-items:flex-end; padding:0; }
+  .dialog{ max-width:none; border-radius:var(--r-lg) var(--r-lg) 0 0; max-height:92dvh; }
+  .overlay.open .dialog{ transform:none; }
+  .dialog{ transform:translateY(100%); }
+  .dialog-foot{ padding-bottom:calc(12px + env(safe-area-inset-bottom)); }
+}
+
+/* ── 문자 상세 ── */
+.detail-hero{
+  display:flex; align-items:center; gap:14px;
+  padding:14px; background:var(--surface-2);
+  border:1px solid var(--border); border-radius:var(--r-md); margin-bottom:14px;
+}
+.detail-glyph{
+  font-family:var(--font-glyph); font-variant-emoji:text;
+  font-size:56px; line-height:1.1; flex:none;
+  min-width:76px; text-align:center; color:var(--text);
+}
+.detail-glyph.emoji{ font-family:var(--font-emoji); font-variant-emoji:emoji; }
+.detail-meta{ min-width:0; }
+.detail-name{ font-size:1.05rem; font-weight:700; margin-bottom:3px; }
+.detail-cp{ font-size:12.5px; color:var(--text-3); font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+
+.grade{
+  display:inline-flex; align-items:flex-start; gap:8px;
+  padding:10px 12px; border-radius:var(--r-md); margin-bottom:14px; width:100%;
+  font-size:12.5px; line-height:1.55;
+}
+.grade .mi{ font-size:18px; flex:none; margin-top:1px; }
+.grade strong{ display:block; font-size:13px; margin-bottom:2px; }
+.grade-A{ background:color-mix(in srgb,var(--c-success) 12%, var(--surface)); color:var(--c-success); border:1px solid color-mix(in srgb,var(--c-success) 32%, transparent); }
+.grade-B{ background:color-mix(in srgb,#D9A400 12%, var(--surface)); color:#9A7500; border:1px solid color-mix(in srgb,#D9A400 32%, transparent); }
+.grade-C{ background:color-mix(in srgb,var(--c-error) 10%, var(--surface)); color:var(--c-error); border:1px solid color-mix(in srgb,var(--c-error) 30%, transparent); }
+[data-theme="dark"] .grade-B{ color:#F0C64E; }
+.grade span{ color:var(--text-2); }
+.grade-A span,.grade-B span,.grade-C span{ color:inherit; opacity:.92; }
+
+.font-preview{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:14px; }
+.font-preview div{
+  text-align:center; padding:10px 4px;
+  border:1px solid var(--border); border-radius:var(--r-md); background:var(--surface-2);
+}
+.font-preview .fp-glyph{ font-size:28px; line-height:1.3; display:block; }
+.font-preview .fp-label{ font-size:10px; color:var(--text-4); }
+.fp-serif{ font-family:var(--font-serif); }
+.fp-gothic{ font-family:var(--font-gothic); }
+.fp-web{ font-family:var(--font-glyph); }
+
+.kv{ display:flex; flex-direction:column; gap:6px; margin-bottom:14px; }
+.kv-row{
+  display:flex; align-items:center; gap:8px;
+  padding:8px 10px; border:1px solid var(--border); border-radius:var(--r-sm);
+  background:var(--surface-2); font-size:12.5px;
+}
+.kv-key{ color:var(--text-4); width:96px; flex:none; font-weight:600; }
+.kv-val{
+  flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; color:var(--text-2);
+}
+.kv-copy{ flex:none; color:var(--text-4); display:grid; place-items:center; width:26px; height:26px; border-radius:var(--r-sm); }
+.kv-copy:hover{ background:var(--surface-3); color:var(--accent); }
+.kv-copy .mi{ font-size:15px; }
+
+.alt-box{
+  display:flex; align-items:center; gap:10px;
+  padding:11px 12px; border-radius:var(--r-md); margin-bottom:14px;
+  background:var(--pastel-green); color:var(--pastel-green-d);
+  border:1px solid color-mix(in srgb,var(--c-success) 26%, transparent);
+}
+.alt-glyph{ font-family:var(--font-glyph); font-size:30px; line-height:1; flex:none; }
+.alt-text{ flex:1; min-width:0; font-size:12.5px; line-height:1.45; }
+.alt-text b{ font-size:13px; }
+
+/* ── 호환성 검사기 ── */
+.checker-area{
+  width:100%; min-height:110px; resize:vertical;
+  padding:11px 12px; border:1px solid var(--border); border-radius:var(--r-md);
+  background:var(--surface-2); font-size:15px; line-height:1.6; outline:none;
+  font-family:var(--font-glyph);
+}
+.checker-area:focus{ border-color:var(--accent); box-shadow:0 0 0 3px var(--ring); background:var(--surface); }
+.checker-summary{ display:flex; gap:7px; flex-wrap:wrap; margin:12px 0; }
+.stat{
+  flex:1 1 96px; padding:9px 10px; border-radius:var(--r-md);
+  border:1px solid var(--border); background:var(--surface-2); text-align:center;
+}
+.stat b{ display:block; font-size:1.2rem; font-variant-numeric:tabular-nums; line-height:1.2; }
+.stat span{ font-size:10.5px; color:var(--text-4); }
+.stat.a b{ color:var(--c-success); } .stat.b b{ color:#B98A00; } .stat.c b{ color:var(--c-error); }
+
+.risk-list{ display:flex; flex-direction:column; gap:6px; }
+.risk-row{
+  display:flex; align-items:center; gap:9px;
+  padding:8px 10px; border:1px solid var(--border); border-radius:var(--r-sm);
+  background:var(--surface-2); font-size:12px;
+}
+.risk-glyph{ font-family:var(--font-glyph); font-size:22px; line-height:1; flex:none; min-width:26px; text-align:center; }
+.risk-info{ flex:1; min-width:0; }
+.risk-info b{ font-size:12.5px; display:block; }
+.risk-info small{ color:var(--text-4); }
+.risk-alt{
+  flex:none; display:inline-flex; align-items:center; gap:4px;
+  font-size:12px; font-weight:700; color:var(--c-success);
+  background:color-mix(in srgb,var(--c-success) 12%, transparent);
+  padding:4px 8px; border-radius:999px;
+}
+.risk-alt .g{ font-family:var(--font-glyph); font-size:15px; }
+
+.result-box{
+  margin-top:12px; padding:11px 12px; border-radius:var(--r-md);
+  border:1px solid var(--border); background:var(--surface-2);
+  font-family:var(--font-glyph); font-size:15px; line-height:1.6;
+  white-space:pre-wrap; word-break:break-word; max-height:180px; overflow-y:auto;
+}
+mark.bad{ background:color-mix(in srgb,var(--c-error) 22%, transparent); color:inherit; border-radius:3px; padding:0 1px; }
+mark.mid{ background:color-mix(in srgb,#D9A400 26%, transparent); color:inherit; border-radius:3px; padding:0 1px; }
+
+/* ── 설정 ── */
+.set-group{ margin-bottom:18px; }
+.set-group > h3{ font-size:12px; font-weight:700; color:var(--text-3); letter-spacing:.05em; margin-bottom:8px; text-transform:uppercase; }
+.set-row{
+  display:flex; align-items:center; gap:10px;
+  padding:10px 0; border-bottom:1px solid var(--border);
+}
+.set-row:last-child{ border-bottom:none; }
+.set-row .set-label{ flex:1; min-width:0; }
+.set-row .set-label b{ display:block; font-size:14px; font-weight:600; }
+.set-row .set-label small{ font-size:11.5px; color:var(--text-4); line-height:1.45; display:block; }
+
+.legend{ display:flex; flex-direction:column; gap:8px; }
+.legend-row{ display:flex; align-items:flex-start; gap:8px; font-size:12.5px; line-height:1.5; }
+.legend-dot{ width:9px; height:9px; border-radius:50%; flex:none; margin-top:5px; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   푸터
+══════════════════════════════════════════════════════════════════════ */
+.chichiboo-footer{
+  width:100%; padding:var(--sp-md) var(--sp-lg);
+  background:var(--surface); border-top:1px solid var(--border);
+  text-align:center; margin-top:auto;
+}
+.chichiboo-footer a{
+  display:inline-flex; align-items:center; gap:var(--sp-xs);
+  font-size:13px; color:var(--text-3); text-decoration:none; transition:color .2s;
+}
+.chichiboo-footer a:hover{ color:var(--accent); }
+.chichiboo-footer .mi{ font-size:16px; }
+.footer-meta{ display:block; font-size:11px; color:var(--text-4); margin-top:4px; }
+
+/* 스크롤바 */
+::-webkit-scrollbar{ width:10px; height:8px; }
+::-webkit-scrollbar-thumb{ background:var(--border-2); border-radius:99px; border:3px solid transparent; background-clip:content-box; }
+::-webkit-scrollbar-thumb:hover{ background:var(--text-4); background-clip:content-box; }
+::-webkit-scrollbar-track{ background:transparent; }
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+}
+
+@media print{
+  .app-head,.tray,.to-top,.toast,.overlay,.toolbar,.chichiboo-footer{ display:none !important; }
+}
+</style>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
+<body>
+<a class="skip-link" href="#main">본문 바로가기</a>
 
-<!-- HEADER -->
-<header class="bg-white shadow-sm sticky top-0 z-40">
-  <div class="max-w-screen-xl mx-auto px-6 py-3 flex items-center gap-3">
-    <div class="flex items-center gap-1.5 shrink-0">
-      <span class="material-icons text-indigo-600" style="font-size:26px">grid_view</span>
-      <span class="font-bold text-2xl text-gray-800 tracking-tight">SymbolBox</span>
-    </div>
-    <div class="flex-1 relative">
-      <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" style="font-size:18px">search</span>
-      <input id="q" type="text" placeholder="문자 이름으로 검색…"
-        class="w-full pl-9 pr-9 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:bg-white transition"
-        aria-label="특수문자 검색"/>
-      <button id="clearBtn" onclick="clearSearch()" aria-label="검색어 지우기"
-        class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors hidden">
-        <span class="material-icons" style="font-size:18px">close</span>
+<!-- ══════════════ 헤더 ══════════════ -->
+<header class="app-head">
+  <div class="head-inner">
+    <a class="brand" href="./" aria-label="SymbolBox 홈">
+      <span class="brand-mark"><span class="mi" aria-hidden="true">grid_view</span></span>
+      <span class="brand-name">SymbolBox</span>
+      <span class="brand-ver" id="verBadge">v2.0</span>
+    </a>
+
+    <div class="search">
+      <span class="mi lead" aria-hidden="true">search</span>
+      <input id="q" type="search" inputmode="search" autocomplete="off" autocapitalize="off" spellcheck="false"
+             placeholder="이름·초성·U+2665·문자 붙여넣기…" aria-label="특수문자 검색" />
+      <button class="search-clear" id="qClear" type="button" aria-label="검색어 지우기" hidden>
+        <span class="mi" aria-hidden="true">close</span>
       </button>
     </div>
+
+    <div class="head-actions">
+      <button class="icon-btn" id="btnChecker" type="button" aria-label="문서 호환성 검사" title="문서·PDF 호환성 검사">
+        <span class="mi" aria-hidden="true">fact_check</span>
+      </button>
+      <button class="icon-btn" id="btnTheme" type="button" aria-label="화면 테마 변경" title="화면 테마">
+        <span class="mi" aria-hidden="true">light_mode</span>
+      </button>
+      <button class="icon-btn" id="btnSettings" type="button" aria-label="설정 열기" title="설정">
+        <span class="mi" aria-hidden="true">tune</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="tabs-scroller">
+    <div class="tabs" id="tabs" role="group" aria-label="문자 분류"></div>
   </div>
 </header>
 
-<!-- MAIN -->
-<main class="flex-1 max-w-screen-xl w-full mx-auto px-6 pt-5 pb-12">
+<!-- ══════════════ 본문 ══════════════ -->
+<main id="main">
 
-  <!-- Recent -->
-  <section id="recentSec" class="mb-5 hidden">
-    <div class="flex items-center mb-2">
-      <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-1">
-        <span class="material-icons text-amber-400" style="font-size:14px">history</span>최근 복사
-      </p>
-      <button id="clearRecentBtn" onclick="clearRecent()" aria-label="최근 복사 전체 삭제"
-        class="ml-auto flex items-center gap-0.5 text-xs text-gray-300 hover:text-red-400 transition-colors">
-        <span class="material-icons" style="font-size:13px">delete_outline</span>전체 삭제
+  <section class="panel" id="favSec" hidden>
+    <div class="panel-head">
+      <p class="panel-title"><span class="mi" aria-hidden="true" style="color:#F5B301">star</span>즐겨찾기</p>
+      <button class="panel-action" id="clearFav" type="button">
+        <span class="mi" aria-hidden="true">delete_outline</span>비우기
       </button>
     </div>
-    <div id="recentGrid" class="flex flex-wrap gap-1.5"></div>
+    <div class="chip-row" id="favRow"></div>
   </section>
 
-  <!-- Tabs -->
-  <div class="tabs-wrap overflow-x-auto border-b border-gray-200 mb-3">
-    <div id="tabs" class="flex"></div>
+  <section class="panel" id="recentSec" hidden>
+    <div class="panel-head">
+      <p class="panel-title"><span class="mi" aria-hidden="true">history</span>최근 복사</p>
+      <button class="panel-action" id="clearRecent" type="button">
+        <span class="mi" aria-hidden="true">delete_outline</span>비우기
+      </button>
+    </div>
+    <div class="chip-row" id="recentRow"></div>
+  </section>
+
+  <div class="toolbar">
+    <span class="count-label" id="countLabel"></span>
+    <span class="hint desktop-only"><span class="mi" aria-hidden="true">info</span>우클릭 · Shift+클릭으로 상세 정보</span>
+    <span class="hint mobile-only"><span class="mi" aria-hidden="true">info</span>길게 누르면 상세 정보</span>
+    <span class="toolbar-spacer"></span>
+
+    <label class="switch" title="PDF·인쇄에서 깨질 수 있는 문자를 숨깁니다">
+      <input type="checkbox" id="safeMode" />
+      <span class="switch-track"></span>
+      <span>PDF 안전 모드</span>
+    </label>
+
+    <label class="switch bag" title="여러 문자를 모아 한 번에 복사합니다">
+      <input type="checkbox" id="bagMode" />
+      <span class="switch-track"></span>
+      <span>모아담기</span>
+    </label>
   </div>
 
-  <!-- Symbol count -->
-  <p id="countLabel" class="text-xs text-gray-400 mb-2"></p>
+  <div class="grid" id="grid"></div>
+  <div id="sections"></div>
+  <div class="sentinel" id="sentinel"></div>
 
-  <!-- Normal Grid -->
-  <div id="grid" class="grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(88px, 1fr))"></div>
-
-  <!-- 문서작성 탭 전용 패널 -->
-  <div id="docPanel" class="hidden"></div>
-
-  <div id="empty" class="hidden text-center py-16 text-gray-400 text-sm">
-    <span class="material-icons block mb-2" style="font-size:40px">search_off</span>
-    <span>검색 결과가 없어요</span>
-    <button onclick="clearSearch()"
-      class="mt-3 flex items-center gap-1 mx-auto text-xs text-indigo-400 hover:text-indigo-600 transition-colors">
-      <span class="material-icons" style="font-size:14px">refresh</span>검색어 초기화
+  <div class="empty" id="empty" hidden>
+    <span class="mi" aria-hidden="true">search_off</span>
+    <p id="emptyMsg">검색 결과가 없어요</p>
+    <small id="emptyHint">다른 이름이나 초성으로 찾아보세요</small>
+    <button class="btn btn-ghost btn-sm" id="emptyReset" type="button">
+      <span class="mi" aria-hidden="true">refresh</span>검색어 초기화
     </button>
   </div>
 </main>
 
-<!-- FOOTER -->
-<footer class="text-center py-4 text-xs text-gray-400">
-  <a href="https://litt.ly/chichiboo" target="_blank" rel="noopener"
-     class="hover:text-indigo-500 transition-colors">
+<!-- ══════════════ 모아담기 트레이 ══════════════ -->
+<div class="tray" id="tray" role="region" aria-label="모아담은 문자">
+  <div class="tray-inner">
+    <div class="tray-items" id="trayItems"></div>
+    <div class="tray-actions">
+      <select class="tray-sep" id="traySep" aria-label="구분자 선택">
+        <option value="">붙여서</option>
+        <option value=" ">띄어쓰기</option>
+        <option value=", ">쉼표</option>
+        <option value="\n">줄바꿈</option>
+      </select>
+      <button class="btn btn-primary btn-sm" id="trayCopy" type="button">
+        <span class="mi" aria-hidden="true">content_copy</span>전체 복사
+      </button>
+      <button class="btn btn-ghost btn-sm" id="trayClear" type="button" aria-label="담은 문자 비우기">
+        <span class="mi" aria-hidden="true">delete_outline</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<button class="to-top" id="toTop" type="button" aria-label="맨 위로">
+  <span class="mi" aria-hidden="true">arrow_upward</span>
+</button>
+
+<!-- ══════════════ 푸터 ══════════════ -->
+<footer class="chichiboo-footer">
+  <a href="https://litt.ly/chichiboo" target="_blank" rel="noopener noreferrer">
+    <span class="mi" aria-hidden="true">auto_stories</span>
     Created by. 교육뮤지컬 꿈꾸는 치수쌤
   </a>
+  <span class="footer-meta" id="footerMeta"></span>
 </footer>
 
-<!-- TOAST -->
-<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0">
-  <div class="flex items-center gap-2 bg-gray-900 text-white text-sm font-medium px-5 py-2.5 rounded-2xl shadow-xl">
-    <span class="material-icons text-green-400" style="font-size:16px">check_circle</span>
+<!-- ══════════════ 토스트 ══════════════ -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <div class="toast-inner">
+    <span class="mi" id="toastIcon" aria-hidden="true">check_circle</span>
     <span id="toastTxt"></span>
   </div>
 </div>
 
+<!-- ══════════════ 문자 상세 ══════════════ -->
+<div class="overlay" id="detailOverlay" role="dialog" aria-modal="true" aria-labelledby="detailTitle" hidden>
+  <div class="dialog">
+    <div class="dialog-head">
+      <span class="dialog-title" id="detailTitle"><span class="mi" aria-hidden="true">info</span>문자 정보</span>
+      <button class="icon-btn" data-close type="button" style="margin-left:auto" aria-label="닫기">
+        <span class="mi" aria-hidden="true">close</span>
+      </button>
+    </div>
+    <div class="dialog-body" id="detailBody"></div>
+    <div class="dialog-foot">
+      <button class="btn btn-ghost" data-close type="button">닫기</button>
+      <button class="btn btn-primary" id="detailCopy" type="button">
+        <span class="mi" aria-hidden="true">content_copy</span>문자 복사
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 호환성 검사기 ══════════════ -->
+<div class="overlay" id="checkerOverlay" role="dialog" aria-modal="true" aria-labelledby="checkerTitle" hidden>
+  <div class="dialog wide">
+    <div class="dialog-head">
+      <span class="dialog-title" id="checkerTitle"><span class="mi" aria-hidden="true">fact_check</span>문서·PDF 호환성 검사</span>
+      <button class="icon-btn" data-close type="button" style="margin-left:auto" aria-label="닫기">
+        <span class="mi" aria-hidden="true">close</span>
+      </button>
+    </div>
+    <div class="dialog-body">
+      <p style="font-size:12.5px;color:var(--text-3);line-height:1.6;margin-bottom:10px">
+        한글(HWP)·워드에 붙여넣을 글을 여기에 넣어 보세요.
+        PDF로 변환하거나 인쇄할 때 <b>깨질 수 있는 문자</b>를 찾아 안전한 문자로 바꿔 드립니다.
+      </p>
+      <textarea class="checker-area" id="checkerInput"
+        placeholder="예) ⭐ 중요 ✅ 완료 ➡️ 다음 단계"></textarea>
+
+      <div class="checker-summary" id="checkerStats"></div>
+      <div id="checkerResult"></div>
+    </div>
+    <div class="dialog-foot">
+      <button class="btn btn-ghost" data-close type="button">닫기</button>
+      <button class="btn btn-ghost" id="checkerFix" type="button">
+        <span class="mi" aria-hidden="true">auto_fix_high</span>안전 문자로 변환
+      </button>
+      <button class="btn btn-primary" id="checkerCopy" type="button">
+        <span class="mi" aria-hidden="true">content_copy</span>결과 복사
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 설정 ══════════════ -->
+<div class="overlay" id="settingsOverlay" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
+  <div class="dialog">
+    <div class="dialog-head">
+      <span class="dialog-title" id="settingsTitle"><span class="mi" aria-hidden="true">tune</span>설정</span>
+      <button class="icon-btn" data-close type="button" style="margin-left:auto" aria-label="닫기">
+        <span class="mi" aria-hidden="true">close</span>
+      </button>
+    </div>
+    <div class="dialog-body">
+
+      <div class="set-group">
+        <h3>화면</h3>
+        <div class="set-row">
+          <span class="set-label"><b>테마</b><small>기기 설정을 따르거나 직접 고를 수 있어요</small></span>
+          <div class="seg" id="segTheme" role="group" aria-label="테마 선택">
+            <button type="button" data-v="auto">자동</button>
+            <button type="button" data-v="light">밝게</button>
+            <button type="button" data-v="dark">어둡게</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <span class="set-label"><b>카드 크기</b><small>문자를 더 크게 보고 싶을 때</small></span>
+          <div class="seg" id="segSize" role="group" aria-label="카드 크기 선택">
+            <button type="button" data-v="s">작게</button>
+            <button type="button" data-v="m">보통</button>
+            <button type="button" data-v="l">크게</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <span class="set-label"><b>호환 등급 표시</b><small>카드 왼쪽 위에 등급 색점을 표시합니다</small></span>
+          <label class="switch"><input type="checkbox" id="setGrade" /><span class="switch-track"></span><span class="sr-only">호환 등급 표시</span></label>
+        </div>
+      </div>
+
+      <div class="set-group">
+        <h3>호환 등급이란?</h3>
+        <div class="legend">
+          <div class="legend-row"><span class="legend-dot" style="background:var(--c-success)"></span>
+            <span><b>안전</b> — 한글·워드 기본 글꼴(바탕·굴림·맑은 고딕·함초롬)에 모두 들어 있는 문자입니다. PDF 변환·인쇄까지 안전해요.</span></div>
+          <div class="legend-row"><span class="legend-dot" style="background:#D9A400"></span>
+            <span><b>보통</b> — 요즘 글꼴에서는 대부분 보이지만, 문서에 쓴 글꼴에 따라 빈칸(□)이 될 수 있어요. PDF 저장 전에 한 번 확인하세요.</span></div>
+          <div class="legend-row"><span class="legend-dot" style="background:var(--c-error)"></span>
+            <span><b>주의</b> — 컬러 이모지·확장 영역 문자예요. 문서에 넣으면 흑백으로 바뀌거나 PDF에서 깨질 가능성이 높습니다. 안전한 대체 문자를 함께 안내해 드려요.</span></div>
+        </div>
+      </div>
+
+      <div class="set-group">
+        <h3>단축키</h3>
+        <div class="set-row"><span class="set-label"><b>/</b><small>검색창으로 이동</small></span></div>
+        <div class="set-row"><span class="set-label"><b>Esc</b><small>검색어 지우기 · 창 닫기</small></span></div>
+        <div class="set-row"><span class="set-label"><b>← ↑ → ↓ · Enter</b><small>문자 사이 이동 · 복사</small></span></div>
+        <div class="set-row"><span class="set-label"><b>Shift + 클릭</b><small>문자 상세 정보 열기</small></span></div>
+      </div>
+
+      <div class="set-group">
+        <h3>데이터</h3>
+        <div class="set-row">
+          <span class="set-label"><b>저장된 기록 지우기</b><small>즐겨찾기·최근 복사·설정을 모두 지웁니다</small></span>
+          <button class="btn btn-ghost btn-sm" id="resetAll" type="button">초기화</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="dialog-foot">
+      <button class="btn btn-primary" data-close type="button">확인</button>
+    </div>
+  </div>
+</div>
+
 <script>
-/* ============================================================
-   DATA — [char, name, category]
-============================================================ */
+"use strict";
+/* ══════════════════════════════════════════════════════════════════════
+   문자 데이터 — [문자, 이름, 분류]
+══════════════════════════════════════════════════════════════════════ */
 var D = [
 
 /* ── 인기 ── */
@@ -1121,11 +1895,6 @@ var D = [
 
 ]; /* end D */
 
-/* ============================================================
-   이모지형 — 분류별 데이터 (Windows·Chrome 기본 이모지)
-   각 섹션의 문자는 아래에서 D 배열(category 'emoji')로 자동 병합되어
-   전체 탭·검색에서도 함께 노출됩니다.
-============================================================ */
 var EMOJI_SECTIONS = [
   {
     label: '표정·얼굴', icon: 'mood',
@@ -1343,11 +2112,6 @@ var EMOJI_SECTIONS = [
   },
 ];
 
-/* ============================================================
-   별·도형 탭 데이터 — 분류별 섹션
-   각 섹션의 문자는 아래에서 D 배열(category 'shape')로 자동 병합되어
-   전체 탭·검색에서도 함께 노출됩니다.
-============================================================ */
 var SHAPE_SECTIONS = [
   {
     label: '별 · 반짝임', icon: 'star',
@@ -1534,24 +2298,6 @@ var SHAPE_SECTIONS = [
   },
 ];
 
-/* 섹션형 데이터(EMOJI_SECTIONS·SHAPE_SECTIONS) → D 병합
-   (전체 탭·검색 노출용, 문자 중복 제거) */
-function mergeSections(sections, catId) {
-  var seen = {};
-  sections.forEach(function(sec) {
-    sec.chars.forEach(function(e) {
-      if (seen[e[0]]) return;
-      seen[e[0]] = true;
-      D.push([e[0], e[1], catId]);
-    });
-  });
-}
-mergeSections(EMOJI_SECTIONS, 'emoji');
-mergeSections(SHAPE_SECTIONS, 'shape');
-
-/* ============================================================
-   문서작성 탭 데이터 — 카테고리 블록 구조
-============================================================ */
 var DOC_SECTIONS = [
   {
     id: 'doc-seq',
@@ -1658,380 +2404,1196 @@ var DOC_SECTIONS = [
   },
 ];
 
-/* ============================================================
-   CATEGORIES
-============================================================ */
+/* ══════════════════════════════════════════════════════════════════════
+   섹션 데이터 → D 병합 (전체 탭·검색 노출용)
+══════════════════════════════════════════════════════════════════════ */
+function mergeSections(sections, catId){
+  var seen = {};
+  sections.forEach(function(sec){
+    sec.chars.forEach(function(e){
+      if (seen[e[0]]) return;
+      seen[e[0]] = true;
+      D.push([e[0], e[1], catId]);
+    });
+  });
+}
+mergeSections(EMOJI_SECTIONS, 'emoji');
+mergeSections(SHAPE_SECTIONS, 'shape');
+mergeSections(DOC_SECTIONS, 'doc');
+
+/* ══════════════════════════════════════════════════════════════════════
+   분류 — v2 재편 (기본 / 문서 / 기호 / 학술 / 이모지 그룹)
+══════════════════════════════════════════════════════════════════════ */
 var CATS = [
-  {id:'all',     label:'전체',        icon:'apps'},
-  {id:'pop',     label:'인기',        icon:'star'},
-  {id:'doc',     label:'문서작성',    icon:'description'},
-  {id:'dot',     label:'점·구분선',  icon:'more_horiz'},
-  {id:'shape',   label:'별·도형',    icon:'category'},
-  {id:'arrow',   label:'화살표',      icon:'trending_flat'},
-  {id:'symbol',  label:'기호·부호',  icon:'tag'},
-  {id:'roman',   label:'로마자·숫자', icon:'looks_one'},
-  {id:'bracket', label:'괄호',        icon:'data_array'},
-  {id:'math',    label:'수학기호',    icon:'functions'},
-  {id:'greek',   label:'그리스문자',  icon:'font_download'},
-  {id:'alpha',   label:'문자·첨자',   icon:'text_fields'},
-  {id:'box',     label:'박스·괘선',   icon:'border_all'},
-  {id:'music',   label:'음악·게임',   icon:'music_note'},
-  {id:'astro',   label:'별자리·천문', icon:'nights_stay'},
-  {id:'currency',label:'통화',        icon:'payments'},
-  {id:'emoji',   label:'이모지형',    icon:'sentiment_satisfied'},
+  {id:'all',      label:'전체',        icon:'apps',                  group:'기본'},
+  {id:'fav',      label:'즐겨찾기',    icon:'star',                  group:'기본'},
+  {id:'pop',      label:'자주 쓰는',   icon:'bolt',                  group:'기본'},
+
+  {id:'doc',      label:'문서·공문',   icon:'description',           group:'문서'},
+  {id:'dot',      label:'점·구분선',   icon:'more_horiz',            group:'문서'},
+  {id:'bracket',  label:'괄호·인용',   icon:'format_quote',          group:'문서'},
+  {id:'roman',    label:'숫자·순서',   icon:'format_list_numbered',  group:'문서'},
+  {id:'box',      label:'표·괘선',     icon:'border_all',            group:'문서'},
+
+  {id:'shape',    label:'도형·별',     icon:'category',              group:'기호'},
+  {id:'arrow',    label:'화살표',      icon:'trending_flat',         group:'기호'},
+  {id:'symbol',   label:'기호·부호',   icon:'tag',                   group:'기호'},
+  {id:'currency', label:'화폐',        icon:'payments',              group:'기호'},
+
+  {id:'math',     label:'수학',        icon:'functions',             group:'학술'},
+  {id:'greek',    label:'그리스문자',  icon:'font_download',         group:'학술'},
+  {id:'alpha',    label:'문자·첨자',   icon:'text_fields',           group:'학술'},
+  {id:'music',    label:'음악·놀이',   icon:'music_note',            group:'학술'},
+  {id:'astro',    label:'하늘·별자리', icon:'nights_stay',           group:'학술'},
+
+  {id:'emoji',    label:'이모지',      icon:'sentiment_satisfied',   group:'이모지'}
+];
+var SECTION_CATS = { doc:1, shape:1, emoji:1 };
+
+/* ══════════════════════════════════════════════════════════════════════
+   호환성 엔진
+   ─────────────────────────────────────────────────────────────────────
+   같은 문자라도 기기·글꼴에 따라 다르게 보이거나, 한글·워드에서 PDF로
+   변환할 때 사라지는 일이 생깁니다. 아래 규칙으로 문자마다 등급을 매겨
+   "이 문자를 공문서에 써도 되는지"를 바로 알려 줍니다.
+
+     A 안전 — 한글·워드 기본 한글 글꼴(바탕·굴림·맑은 고딕·함초롬)에 모두
+              들어 있는 문자. KS X 1001 특수문자 영역이 중심입니다.
+     B 보통 — 유니코드 기본 다국어 평면(BMP) 문자. 최신 글꼴에서는 대개
+              보이지만 문서 글꼴에 따라 빈칸(□)이 될 수 있습니다.
+     C 주의 — 컬러 이모지·확장 영역(SMP)·변형 선택자·ZWJ 조합.
+              PDF 변환·인쇄에서 깨질 가능성이 높습니다.
+══════════════════════════════════════════════════════════════════════ */
+
+/* 한글 문서 글꼴이 공통으로 지원하는 코드포인트 구간 */
+var SAFE_RANGES = [
+  [0x0020,0x007E], /* ASCII */
+  [0x00A1,0x00FF], /* 라틴-1 보충 — 기호·악센트 */
+  [0x0391,0x03A9], /* 그리스 대문자 */
+  [0x03B1,0x03C9], /* 그리스 소문자 */
+  [0x0401,0x045F], /* 키릴 */
+  [0x2010,0x2027], /* 대시·따옴표·말줄임표 */
+  [0x2030,0x2037], /* 퍼밀·프라임 */
+  [0x2070,0x207F], /* 윗첨자 */
+  [0x2080,0x208E], /* 아랫첨자 */
+  [0x2150,0x2182], /* 분수 · 로마 숫자 */
+  [0x2460,0x24E9], /* 원문자 */
+  [0x2500,0x257F], /* 괘선 */
+  [0x2580,0x259F], /* 블록·음영 */
+  [0x25A0,0x25FF], /* 기하 도형 */
+  [0x3001,0x3020], /* CJK 문장부호 */
+  [0x3041,0x3096], /* 히라가나 */
+  [0x30A1,0x30FE], /* 가타카나 */
+  [0x3131,0x318E], /* 한글 자모 */
+  [0x3200,0x321C], /* 괄호 한글 */
+  [0x3260,0x327B], /* 원 한글 */
+  [0x3380,0x33DD], /* CJK 호환 단위 */
+  [0x4E00,0x9FFF], /* CJK 한자 */
+  [0xAC00,0xD7A3], /* 한글 음절 */
+  [0xF900,0xFA0B], /* CJK 호환 한자 */
+  [0xFF01,0xFF5E], /* 전각 ASCII */
+  [0xFFE0,0xFFE6]  /* 전각 통화 */
 ];
 
-/* ============================================================
-   STATE
-============================================================ */
-var cat = 'pop';
-var q   = '';
-var LS  = 'sb_v3';
-var MAX_R = 12;
+/* 구간에 안 잡히지만 KS X 1001·한글 글꼴에 확실히 들어 있는 문자 */
+var SAFE_EXTRA =
+  '←↑→↓↔↕↖↗↘↙⇐⇑⇒⇓⇔⇕⇖⇗⇘⇙' +
+  '∀∂∃∇∈∋∏∑∕∗∙√∝∞∟∠∡∢∥∧∨∩∪∫∬∮∴∵∶∷∽≈≒≠≡≤≥≪≫⊂⊃⊆⊇⊕⊖⊗⊘⊙⊥⌒' +
+  '※℃℉№™℡ℓÅΩ℠℗' +
+  '★☆ˇ˘˝˙˚¸˛ː´∼' +
+  '♀♂♩♪♫♬♭♮♯♠♡♣♤♥♧☎☏☜☞♨㉿㈜㈱' +
+  '〒〓・ー';
 
-/* ============================================================
-   RECENT
-============================================================ */
-function getR() {
-  try { return JSON.parse(localStorage.getItem(LS) || '[]'); }
-  catch(e) { return []; }
-}
-function pushR(c) {
-  var r = getR().filter(function(x){ return x !== c; });
-  r.unshift(c);
-  if (r.length > MAX_R) r = r.slice(0, MAX_R);
-  localStorage.setItem(LS, JSON.stringify(r));
-  renderRecent();
-}
-function renderRecent() {
-  var sec = document.getElementById('recentSec');
-  var g   = document.getElementById('recentGrid');
-  var r   = getR();
-  if (!r.length) { sec.classList.add('hidden'); return; }
-  sec.classList.remove('hidden');
-  g.innerHTML = '';
-  r.forEach(function(c) { g.appendChild(makeCard(c, null, true)); });
-}
-function clearRecent() {
-  localStorage.removeItem(LS);
-  renderRecent();
-}
+/* BMP인데도 기본이 컬러 이모지인 문자 (흑백 글리프가 없어 문서에서 깨짐) */
+var EMOJI_PRESENTATION =
+  '⌚⌛⏩⏪⏫⏬⏰⏳◽◾☔☕♈♉♊♋♌♍♎♏♐♑♒♓♿⚓⚡⚪⚫⚽⚾' +
+  '⛄⛅⛎⛔⛪⛲⛳⛵⛺⛽✅✊✋✨❌❎❓❔❕❗➕➖➗➰➿⬛⬜⭐⭕';
 
-/* ============================================================
-   CARD
-============================================================ */
-var NAME_MAP = (function() {
-  var m = {};
-  for (var i = 0; i < D.length; i++) {
-    if (!m.hasOwnProperty(D[i][0])) m[D[i][0]] = D[i][1];
-  }
+/* 기본은 글자(흑백)이지만 기기에 따라 컬러로 튀는 문자.
+   화면에서도 문서와 같은 흑백으로 보이도록 U+FE0E(글자 표현)를 붙여 그립니다. */
+var TEXT_PRESENTATION =
+  '©®‼⁉™ℹ↔↕↖↗↘↙↩↪⌨⏏⏭⏮⏯⏱⏲⏸⏹⏺Ⓜ▪▫▶◀◻◼' +
+  '☀☁☂☃☄☎☑☘☝☠☢☣☦☪☮☯☸☹☺♀♂♟♠♣♥♦♨♻♾' +
+  '⚒⚔⚕⚖⚗⚙⚛⚜⚠⚧⚰⚱⛈⛏⛑⛓⛩⛰⛱⛴⛷⛸⛹' +
+  '✂✈✉✌✍✏✒✔✖✝✡✳✴❄❇❣❤➡⤴⤵⬅⬆⬇〰〽㊗㊙';
+
+function charSet(s){
+  var m = {}, arr = Array.from(s);
+  for (var i=0;i<arr.length;i++) m[arr[i]] = true;
   return m;
-})();
-function getCharName(c) {
-  return NAME_MAP.hasOwnProperty(c) ? NAME_MAP[c] : '';
+}
+var SET_SAFE_EXTRA = charSet(SAFE_EXTRA);
+var SET_EMOJI_PRES = charSet(EMOJI_PRESENTATION);
+var SET_TEXT_PRES  = charSet(TEXT_PRESENTATION);
+
+var VS16 = '\uFE0F';   /* 컬러 이모지 표현 */
+var VS15 = '\uFE0E';   /* 흑백 글자 표현 */
+var ZWJ  = '\u200D';   /* 이모지 결합 */
+var RE_VS = /[\uFE0E\uFE0F]/g;
+
+/* 변형 선택자를 걷어낸 기본 문자 */
+function baseChar(ch){ return ch.replace(RE_VS, ''); }
+
+function inSafeRange(cp){
+  for (var i=0;i<SAFE_RANGES.length;i++){
+    if (cp >= SAFE_RANGES[i][0] && cp <= SAFE_RANGES[i][1]) return true;
+  }
+  return false;
 }
 
-function makeCard(c, name, small, isDoc) {
-  var b = document.createElement('button');
-  b.className = small ? 'sym-sm' : (isDoc ? 'doc-card' : 'sym-card');
-  var displayName = name || getCharName(c);
-  b.title = c + (displayName ? '  ' + displayName : '');
-  b.setAttribute('aria-label', (displayName || c) + ' 복사');
+var GRADE_INFO = {
+  A:{ label:'안전' },
+  B:{ label:'보통' },
+  C:{ label:'주의' }
+};
 
-  if (!small) {
-    var charSpan = document.createElement('span');
-    charSpan.textContent = c;
-    b.appendChild(charSpan);
-    if (displayName) {
-      var nameSpan = document.createElement('span');
-      nameSpan.className = 'sym-name';
-      nameSpan.textContent = displayName;
-      b.appendChild(nameSpan);
+var _gradeCache = {};
+function gradeOf(ch){
+  if (_gradeCache[ch]) return _gradeCache[ch];
+  var r = _grade(ch);
+  _gradeCache[ch] = r;
+  return r;
+}
+function _grade(ch){
+  if (!ch) return { grade:'B', why:'' };
+
+  if (ch.indexOf(ZWJ) !== -1)
+    return { grade:'C', why:'여러 문자를 이어 붙인 조합 이모지예요. 문서에 붙여넣으면 낱개로 흩어지기 쉽습니다.' };
+  if (ch.indexOf(VS16) !== -1)
+    return { grade:'C', why:'컬러 표시용 변형 선택자(U+FE0F)가 붙어 있어요. 문서·PDF에서 네모(□)가 함께 찍히는 경우가 있습니다.' };
+
+  var cps = Array.from(ch);
+  for (var i=0;i<cps.length;i++){
+    if (cps[i].codePointAt(0) > 0xFFFF)
+      return { grade:'C', why:'유니코드 확장 영역(SMP) 이모지예요. 문서 글꼴에 흑백 글리프가 없어 PDF 변환 때 대부분 사라집니다.' };
+  }
+  if (SET_EMOJI_PRES[ch])
+    return { grade:'C', why:'기본 표시가 컬러 이모지라 흑백 글리프가 없어요. 인쇄·PDF에서 깨질 수 있습니다.' };
+
+  if (SET_SAFE_EXTRA[ch] || inSafeRange(ch.codePointAt(0)))
+    return { grade:'A', why:'KS X 1001 특수문자 영역이거나, 한글 문서 글꼴이 공통으로 지원하는 문자예요.' };
+
+  return { grade:'B', why:'유니코드 기본 영역(BMP) 문자예요. 맑은 고딕·함초롬 계열에서는 보통 잘 보입니다.' };
+}
+
+/* 깨지기 쉬운 문자를 대신할 안전한 문자 */
+var SAFE_ALT = {
+  '⭐':'★','🌟':'★','✨':'☆','💫':'☆','🌠':'☆',
+  '❤':'♥','🧡':'♥','💛':'♥','💚':'♥','💙':'♥','💜':'♥','🖤':'♥','🤎':'♥',
+  '💖':'♥','💗':'♥','💓':'♥','💕':'♥','💞':'♥','💘':'♥','❣':'♥','🤍':'♡','💔':'♡',
+  '✅':'✔','☑':'✔','❎':'✕','❌':'✕','✖':'×','❗':'!','❓':'?','‼':'!!','⁉':'!?',
+  '⬛':'■','◼':'■','◾':'■','🔲':'■','🟥':'■','🟦':'■','🟩':'■','🟨':'■','🟧':'■','🟪':'■','🟫':'■',
+  '⬜':'□','◻':'□','◽':'□','🔳':'□',
+  '🔴':'●','⚫':'●','🔵':'●','🟠':'●','🟡':'●','🟢':'●','🟣':'●','🟤':'●','⚪':'○',
+  '🔺':'▲','🔻':'▼','🔼':'▲','🔽':'▼','⏫':'▲','⏬':'▼',
+  '🔶':'◆','🔸':'◆','🔷':'◇','🔹':'◇',
+  '➡':'→','⬅':'←','⬆':'↑','⬇':'↓','⏩':'≫','⏪':'≪',
+  '⚠':'※','📌':'※','📍':'※','🚫':'×','⛔':'×',
+  '🎵':'♪','🎶':'♬','🔔':'♪',
+  '☘':'♣','🍀':'♣','🎯':'◎','⏸':'∥',
+  '👉':'☞','👈':'☜'
+};
+var RANK = { A:0, B:1, C:2 };
+
+/* 대체 문자가 실제로 더 안전할 때만 제안합니다. */
+function altOf(ch){
+  var b = baseChar(ch);
+  var alt = SAFE_ALT[b] || SAFE_ALT[ch];
+  if (!alt || alt === b) return null;
+  if (RANK[gradeOf(alt).grade] >= RANK[gradeOf(b).grade]) return null;
+  return alt;
+}
+
+/* 화면에 그릴 문자열 — 문서에 붙여넣은 모습과 최대한 같게 만듭니다. */
+function displayGlyph(ch, catId){
+  if (catId === 'emoji') return ch;
+  if (SET_TEXT_PRES[ch]) return ch + VS15;
+  return ch;
+}
+function isEmojiGlyph(ch, catId){
+  if (catId === 'emoji') return true;
+  var cps = Array.from(ch);
+  for (var i=0;i<cps.length;i++) if (cps[i].codePointAt(0) > 0xFFFF) return true;
+  return !!SET_EMOJI_PRES[ch];
+}
+
+/* 문자열을 사람이 보는 단위(자소)로 자릅니다. */
+function graphemes(str){
+  if (window.Intl && Intl.Segmenter){
+    var out = [];
+    var it = new Intl.Segmenter('ko', { granularity:'grapheme' }).segment(str)[Symbol.iterator]();
+    for (var r = it.next(); !r.done; r = it.next()) out.push(r.value.segment);
+    return out;
+  }
+  var cps = Array.from(str), res = [];
+  for (var i=0;i<cps.length;i++){
+    var c = cps[i];
+    if (res.length && (c === VS15 || c === VS16 || c === ZWJ)){ res[res.length-1] += c; continue; }
+    if (res.length && res[res.length-1].slice(-1) === ZWJ){ res[res.length-1] += c; continue; }
+    res.push(c);
+  }
+  return res;
+}
+
+/* 코드포인트 표기 — U+2665 */
+function cpString(ch){
+  return Array.from(ch).map(function(c){
+    return 'U+' + c.codePointAt(0).toString(16).toUpperCase().padStart(4,'0');
+  }).join(' ');
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   상태 · 저장소
+══════════════════════════════════════════════════════════════════════ */
+var APP_VERSION = '2.0.0';
+var K_FAV='sb2.fav', K_RECENT='sb2.recent', K_SET='sb2.set', K_LEGACY='sb_v3';
+var MAX_RECENT = 18, MAX_FAV = 60, CHUNK = 240;
+
+var state = { cat:'pop', q:'', safeMode:false, bagMode:false, bag:[], rendered:0, filtered:[] };
+var settings = { theme:'auto', size:'m', grade:true };
+
+function lsGet(k, fallback){
+  try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; }
+  catch(e){ return fallback; }
+}
+function lsSet(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+
+var favs   = lsGet(K_FAV, []);
+var recent = lsGet(K_RECENT, null);
+if (recent === null){ recent = lsGet(K_LEGACY, []); lsSet(K_RECENT, recent); }  /* v1 기록 이어받기 */
+settings = Object.assign(settings, lsGet(K_SET, {}));
+
+/* ══════════════════════════════════════════════════════════════════════
+   조회용 색인
+══════════════════════════════════════════════════════════════════════ */
+var NAME_MAP = {}, CAT_OF = {}, CAT_COUNT = {}, BY_CAT = {};
+(function buildIndex(){
+  var seenAll = {}, seenCat = {};
+  BY_CAT.all = [];
+  for (var i=0;i<D.length;i++){
+    var e = D[i], ch = e[0], ct = e[2];
+    if (!NAME_MAP.hasOwnProperty(ch)){ NAME_MAP[ch] = e[1]; CAT_OF[ch] = ct; }
+    if (!seenAll[ch]){ seenAll[ch] = true; BY_CAT.all.push(e); }
+    var key = ct + ' ' + ch;
+    if (seenCat[key]) continue;
+    seenCat[key] = true;
+    (BY_CAT[ct] = BY_CAT[ct] || []).push(e);
+  }
+  CATS.forEach(function(c){ CAT_COUNT[c.id] = (BY_CAT[c.id] || []).length; });
+  CAT_COUNT.all = BY_CAT.all.length;
+})();
+function nameOf(ch){ return NAME_MAP.hasOwnProperty(ch) ? NAME_MAP[ch] : ''; }
+function catOf(ch){ return CAT_OF.hasOwnProperty(ch) ? CAT_OF[ch] : ''; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   검색 — 이름 · 초성 · 코드포인트 · 문자 붙여넣기 · 영문 별칭
+══════════════════════════════════════════════════════════════════════ */
+var CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+function toChosung(s){
+  var out = '';
+  for (var i=0;i<s.length;i++){
+    var c = s.charCodeAt(i);
+    out += (c >= 0xAC00 && c <= 0xD7A3) ? CHO[Math.floor((c - 0xAC00) / 588)] : s[i];
+  }
+  return out;
+}
+var CHOSUNG_MAP = {};
+function chosungOf(name){
+  if (!CHOSUNG_MAP.hasOwnProperty(name)) CHOSUNG_MAP[name] = toChosung(name);
+  return CHOSUNG_MAP[name];
+}
+var RE_ONLY_CHO = /^[ㄱ-ㅎ]+$/;
+
+var ALIAS = {
+  heart:'하트', star:'별', arrow:'화살표', check:'체크', tick:'체크', circle:'원',
+  square:'사각', box:'네모', triangle:'삼각', diamond:'다이아몬드', flower:'꽃',
+  music:'음표', note:'음표', sun:'해', moon:'달', cloud:'구름', rain:'비', snow:'눈',
+  fire:'불', cat:'고양이', dog:'강아지', smile:'웃음', hand:'손', flag:'깃발',
+  car:'자동차', plane:'비행기', money:'돈', clock:'시계', line:'선', dot:'점',
+  bracket:'괄호', quote:'따옴표', warning:'경고', cross:'십자', plus:'더하기',
+  minus:'빼기', divide:'나누기', equal:'같', infinity:'무한', degree:'도',
+  alpha:'알파', beta:'베타', gamma:'감마', delta:'델타', omega:'오메가', pi:'파이',
+  sigma:'시그마', theta:'세타', lambda:'람다', copyright:'저작권',
+  trademark:'상표', won:'원화', dollar:'달러', euro:'유로', yen:'엔'
+};
+
+function buildMatcher(raw){
+  var qs = raw.trim();
+  if (!qs) return null;
+  var lower = qs.toLowerCase();
+
+  /* 1) 코드포인트 — "U+2665", "u2665", "2665" */
+  var m = lower.match(/^u\+?([0-9a-f]{2,6})$/) || (/^[0-9a-f]{4,6}$/.test(lower) ? [null, lower] : null);
+  if (m){
+    var cp = parseInt(m[1], 16);
+    if (cp >= 0 && cp <= 0x10FFFF){
+      var target = String.fromCodePoint(cp);
+      return function(e){ return e[0].indexOf(target) !== -1; };
     }
-  } else {
-    b.textContent = c;
   }
 
-  b.addEventListener('click', function(e) { addRipple(b, e); copyChar(c); });
-  return b;
+  /* 2) 문자를 그대로 붙여넣은 경우 */
+  var gs = graphemes(qs);
+  if (gs.length <= 3 && !/[가-힣a-z0-9ㄱ-ㅎ]/i.test(qs)){
+    return function(e){ return gs.indexOf(e[0]) !== -1 || e[0] === qs; };
+  }
+
+  /* 3) 초성만 입력한 경우 — ㅎㅌ → 하트 */
+  if (RE_ONLY_CHO.test(qs)){
+    return function(e){ return chosungOf(e[1]).indexOf(qs) !== -1; };
+  }
+
+  /* 4) 이름 · 영문 별칭 */
+  var extra = null;
+  for (var k in ALIAS){
+    if (ALIAS.hasOwnProperty(k) && k.indexOf(lower) === 0){ extra = ALIAS[k]; break; }
+  }
+  return function(e){
+    var nm = e[1];
+    if (nm.toLowerCase().indexOf(lower) !== -1) return true;
+    if (extra && nm.indexOf(extra) !== -1) return true;
+    return e[0] === qs;
+  };
 }
 
-/* ============================================================
-   RIPPLE
-============================================================ */
-function addRipple(el, e) {
+/* ══════════════════════════════════════════════════════════════════════
+   DOM
+══════════════════════════════════════════════════════════════════════ */
+function $(id){ return document.getElementById(id); }
+var elGrid=$('grid'), elSections=$('sections'), elEmpty=$('empty'), elCount=$('countLabel'),
+    elTabs=$('tabs'), elQ=$('q'), elQClear=$('qClear'), elSentinel=$('sentinel'),
+    elFavSec=$('favSec'), elFavRow=$('favRow'), elRecentSec=$('recentSec'), elRecentRow=$('recentRow'),
+    elTray=$('tray'), elTrayItems=$('trayItems'), elToast=$('toast'), elToastTxt=$('toastTxt'),
+    elToastIcon=$('toastIcon'), elToTop=$('toTop');
+
+var ESC_MAP = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return ESC_MAP[c]; }); }
+
+/* ══════════════════════════════════════════════════════════════════════
+   카드 — 3,000장을 그려도 버티도록 문자열로 조립하고 이벤트는 위임합니다.
+══════════════════════════════════════════════════════════════════════ */
+function cardHTML(ch, name, catId){
+  var nm = name || nameOf(ch);
+  var g  = gradeOf(ch).grade;
+  var fav = favs.indexOf(ch) !== -1;
+  var picked = state.bag.indexOf(ch) !== -1;
+  return '<div class="card' + (picked ? ' picked' : '') + '" role="button" tabindex="0"' +
+         ' data-c="' + esc(ch) + '" aria-label="' + esc((nm || ch) + ' 복사') + '"' +
+         ' title="' + esc(ch + (nm ? '  ' + nm : '') + '  · ' + GRADE_INFO[g].label) + '">' +
+           '<span class="card-dot dot-' + g + '" aria-hidden="true"></span>' +
+           '<span class="card-glyph' + (isEmojiGlyph(ch, catId) ? ' emoji' : '') + '">' +
+             esc(displayGlyph(ch, catId)) + '</span>' +
+           (nm ? '<span class="card-name">' + esc(nm) + '</span>' : '') +
+           '<button class="card-fav' + (fav ? ' on' : '') + '" data-fav="' + esc(ch) + '" tabindex="-1"' +
+           ' aria-label="' + esc((nm || ch) + (fav ? ' 즐겨찾기 해제' : ' 즐겨찾기 추가')) + '">' +
+             '<span class="mi" aria-hidden="true">' + (fav ? 'star' : 'star_border') + '</span>' +
+           '</button>' +
+         '</div>';
+}
+
+function chipHTML(ch, extraClass){
+  var nm = nameOf(ch), catId = catOf(ch);
+  return '<button class="chip' + (isEmojiGlyph(ch, catId) ? ' emoji' : '') +
+         (extraClass ? ' ' + extraClass : '') + '"' +
+         ' data-c="' + esc(ch) + '" title="' + esc(ch + (nm ? '  ' + nm : '')) + '"' +
+         ' aria-label="' + esc((nm || ch) + ' 복사') + '">' + esc(displayGlyph(ch, catId)) + '</button>';
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   목록 만들기 · 그리기
+══════════════════════════════════════════════════════════════════════ */
+function currentPool(){
+  if (state.cat === 'fav') return favs.map(function(ch){ return [ch, nameOf(ch), catOf(ch)]; });
+  return BY_CAT[state.cat] || BY_CAT.all;
+}
+
+function computeFiltered(){
+  var pool = currentPool();
+  var match = buildMatcher(state.q);
+  var out = [];
+  for (var i=0;i<pool.length;i++){
+    var e = pool[i];
+    if (state.safeMode && gradeOf(e[0]).grade === 'C') continue;
+    if (match && !match(e)) continue;
+    out.push(e);
+  }
+  return out;
+}
+
+function renderGrid(reset){
+  if (reset){
+    state.filtered = computeFiltered();
+    state.rendered = 0;
+    elGrid.innerHTML = '';
+  }
+  var data = state.filtered;
+  var end = Math.min(state.rendered + CHUNK, data.length);
+  if (end > state.rendered){
+    var html = '';
+    for (var i=state.rendered;i<end;i++) html += cardHTML(data[i][0], data[i][1], data[i][2]);
+    elGrid.insertAdjacentHTML('beforeend', html);
+    state.rendered = end;
+  }
+}
+
+function renderSectionView(sections, catId){
+  var match = buildMatcher(state.q);
+  var html = '', shown = 0;
+  sections.forEach(function(sec, idx){
+    var chars = sec.chars.filter(function(e){
+      if (state.safeMode && gradeOf(e[0]).grade === 'C') return false;
+      return !match || match([e[0], e[1], catId]);
+    });
+    if (!chars.length) return;
+    shown += chars.length;
+    html += '<section class="section" data-sec="' + idx + '">' +
+      '<div class="section-head" role="button" tabindex="0" aria-expanded="true">' +
+        '<span class="mi lead" aria-hidden="true">' + esc(sec.icon || 'label') + '</span>' +
+        '<span class="section-title">' + esc(sec.title || sec.label) + '</span>' +
+        '<span class="badge ' + esc(sec.badgeClass || 'badge-etc') + '">' +
+          esc(sec.badge || (chars.length + '개')) + '</span>' +
+        '<span class="section-toggle mi" aria-hidden="true">expand_more</span>' +
+      '</div><div class="section-body">';
+
+    if (sec.note) html += '<p class="section-note">' + esc(sec.note) + '</p>';
+
+    if (sec.seq){
+      html += '<div class="seq-flow">';
+      sec.seq.forEach(function(item, i){
+        html += '<span class="seq-chip"><span class="seq-sym">' + esc(item.sym) + '</span>' +
+                '<span class="seq-label">' + esc(item.label) + '</span></span>';
+        if (i < sec.seq.length - 1) html += '<span class="seq-arrow" aria-hidden="true">&#8594;</span>';
+      });
+      html += '</div>';
+    }
+
+    html += '<div class="grid">';
+    chars.forEach(function(e){ html += cardHTML(e[0], e[1], catId); });
+    html += '</div></div></section>';
+  });
+  elSections.innerHTML = html;
+  return shown;
+}
+
+function render(){
+  var isSection = SECTION_CATS[state.cat] && !state.q.trim();
+  var total;
+
+  if (isSection){
+    elGrid.hidden = true; elGrid.innerHTML = '';
+    elSections.hidden = false;
+    var src = state.cat === 'doc' ? DOC_SECTIONS : (state.cat === 'emoji' ? EMOJI_SECTIONS : SHAPE_SECTIONS);
+    total = renderSectionView(src, state.cat);
+    state.filtered = []; state.rendered = 0;
+  } else {
+    elSections.hidden = true; elSections.innerHTML = '';
+    elGrid.hidden = false;
+    renderGrid(true);
+    total = state.filtered.length;
+  }
+
+  elCount.textContent = total ? total.toLocaleString('ko-KR') + '개' : '';
+
+  var isEmpty = total === 0;
+  elEmpty.hidden = !isEmpty;
+  if (isEmpty){
+    if (state.cat === 'fav' && !state.q.trim()){
+      $('emptyMsg').textContent = '즐겨찾기가 비어 있어요';
+      $('emptyHint').textContent = '카드 오른쪽 위 별을 눌러 자주 쓰는 문자를 모아 두세요';
+      $('emptyReset').hidden = true;
+    } else if (state.safeMode && !state.q.trim()){
+      $('emptyMsg').textContent = 'PDF 안전 모드에서는 볼 문자가 없어요';
+      $('emptyHint').textContent = '이 분류는 대부분 이모지예요. 안전 모드를 끄면 볼 수 있습니다';
+      $('emptyReset').hidden = true;
+    } else {
+      $('emptyMsg').textContent = '검색 결과가 없어요';
+      $('emptyHint').textContent = '이름·초성(ㅎㅌ)·U+2665·문자 붙여넣기로 찾아보세요';
+      $('emptyReset').hidden = false;
+    }
+  }
+  syncURL();
+}
+
+/* 아래로 스크롤하면 나머지를 이어서 그립니다 (전체 탭 3,000장 대응) */
+if ('IntersectionObserver' in window){
+  new IntersectionObserver(function(entries){
+    if (entries[0].isIntersecting && state.rendered < state.filtered.length) renderGrid(false);
+  }, { rootMargin:'600px' }).observe(elSentinel);
+} else {
+  window.addEventListener('scroll', function(){
+    if (state.rendered < state.filtered.length &&
+        window.innerHeight + window.scrollY > document.body.offsetHeight - 800) renderGrid(false);
+  }, { passive:true });
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   탭
+══════════════════════════════════════════════════════════════════════ */
+function renderTabs(){
+  var html = '', lastGroup = null;
+  CATS.forEach(function(c){
+    if (lastGroup !== null && c.group !== lastGroup) html += '<span class="tab-sep" aria-hidden="true"></span>';
+    lastGroup = c.group;
+    var n = c.id === 'fav' ? favs.length : CAT_COUNT[c.id];
+    html += '<button class="tab" type="button" data-cat="' + c.id + '"' +
+            ' aria-pressed="' + (c.id === state.cat) + '">' +
+            '<span class="mi" aria-hidden="true">' + c.icon + '</span>' + esc(c.label) +
+            (n ? '<span class="tab-count">' + n.toLocaleString('ko-KR') + '</span>' : '') +
+            '</button>';
+  });
+  elTabs.innerHTML = html;
+}
+
+function setCat(id){
+  state.cat = id;
+  Array.prototype.forEach.call(elTabs.children, function(el){
+    if (el.dataset && el.dataset.cat) el.setAttribute('aria-pressed', String(el.dataset.cat === id));
+  });
+  var active = elTabs.querySelector('[data-cat="' + id + '"]');
+  if (active && active.scrollIntoView) active.scrollIntoView({ block:'nearest', inline:'center', behavior:'smooth' });
+  render();
+  window.scrollTo({ top:0 });
+}
+elTabs.addEventListener('click', function(e){
+  var btn = e.target.closest('.tab');
+  if (btn) setCat(btn.dataset.cat);
+});
+
+/* ══════════════════════════════════════════════════════════════════════
+   복사 · 토스트
+══════════════════════════════════════════════════════════════════════ */
+var toastTimer = null;
+function showToast(msg, kind){
+  elToastTxt.innerHTML = msg;
+  elToastIcon.textContent = kind === 'warn' ? 'warning_amber' : (kind === 'info' ? 'info' : 'check_circle');
+  elToast.classList.toggle('warn', kind === 'warn');
+  elToast.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ elToast.classList.remove('show'); }, 2200);
+}
+
+function writeClipboard(text){
+  if (navigator.clipboard && window.isSecureContext){
+    return navigator.clipboard.writeText(text).catch(function(){ return legacyCopy(text); });
+  }
+  return legacyCopy(text);
+}
+function legacyCopy(text){
+  return new Promise(function(resolve, reject){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly','');
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+    document.body.appendChild(ta);
+    ta.select();
+    try { ta.setSelectionRange(0, ta.value.length); } catch(e){}
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch(e){}
+    ta.remove();
+    ok ? resolve() : reject(new Error('copy failed'));
+  });
+}
+
+function copyChar(ch){
+  writeClipboard(ch).then(function(){
+    pushRecent(ch);
+    var g = gradeOf(ch).grade;
+    var glyph = '<span class="glyph">' + esc(displayGlyph(ch, catOf(ch))) + '</span>';
+    if (g === 'C'){
+      var alt = altOf(ch);
+      showToast(glyph + ' 복사 — 문서에서 깨질 수 있어요' +
+        (alt ? ' (대신 <span class="glyph">' + esc(alt) + '</span> 권장)' : ''), 'warn');
+    } else {
+      showToast(glyph + ' ' + esc(nameOf(ch)) + ' 복사 완료!');
+    }
+  }).catch(function(){
+    showToast('복사에 실패했어요. 문자를 길게 눌러 직접 복사해 주세요', 'warn');
+  });
+}
+function copyText(text, label){
+  writeClipboard(text).then(function(){ showToast(esc(label || '복사 완료!')); })
+    .catch(function(){ showToast('복사에 실패했어요', 'warn'); });
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   최근 · 즐겨찾기 · 모아담기
+══════════════════════════════════════════════════════════════════════ */
+function pushRecent(ch){
+  recent = recent.filter(function(x){ return x !== ch; });
+  recent.unshift(ch);
+  if (recent.length > MAX_RECENT) recent = recent.slice(0, MAX_RECENT);
+  lsSet(K_RECENT, recent);
+  renderRecent();
+}
+function renderRecent(){
+  if (!recent.length){ elRecentSec.hidden = true; return; }
+  elRecentSec.hidden = false;
+  elRecentRow.innerHTML = recent.map(function(ch){ return chipHTML(ch); }).join('');
+}
+function renderFav(){
+  if (!favs.length) elFavSec.hidden = true;
+  else {
+    elFavSec.hidden = false;
+    elFavRow.innerHTML = favs.map(function(ch){ return chipHTML(ch); }).join('');
+  }
+  var tab = elTabs.querySelector('[data-cat="fav"]');
+  if (!tab) return;
+  var t = tab.querySelector('.tab-count');
+  if (favs.length){
+    if (t) t.textContent = favs.length;
+    else tab.insertAdjacentHTML('beforeend', '<span class="tab-count">' + favs.length + '</span>');
+  } else if (t) t.remove();
+}
+function toggleFav(ch){
+  var i = favs.indexOf(ch);
+  if (i === -1){
+    favs.unshift(ch);
+    if (favs.length > MAX_FAV) favs = favs.slice(0, MAX_FAV);
+    showToast('즐겨찾기에 담았어요', 'info');
+  } else {
+    favs.splice(i, 1);
+    showToast('즐겨찾기에서 뺐어요', 'info');
+  }
+  lsSet(K_FAV, favs);
+  renderFav();
+  var on = favs.indexOf(ch) !== -1;
+  document.querySelectorAll('.card-fav').forEach(function(b){
+    if (b.dataset.fav !== ch) return;
+    b.classList.toggle('on', on);
+    var mi = b.querySelector('.mi');
+    if (mi) mi.textContent = on ? 'star' : 'star_border';
+  });
+  if (state.cat === 'fav') render();
+}
+
+function renderTray(){
+  elTray.classList.toggle('open', state.bagMode);
+  document.body.classList.toggle('tray-open', state.bagMode);
+  elTrayItems.innerHTML = state.bag.length
+    ? state.bag.map(function(ch){ return chipHTML(ch, 'bag-item'); }).join('')
+    : '<span class="tray-empty">문자를 눌러 담아 보세요 · 한 번에 복사할 수 있어요</span>';
+}
+function toggleBag(ch){
+  var i = state.bag.indexOf(ch);
+  if (i === -1) state.bag.push(ch); else state.bag.splice(i, 1);
+  renderTray();
+  var on = state.bag.indexOf(ch) !== -1;
+  document.querySelectorAll('.card').forEach(function(el){
+    if (el.dataset.c === ch) el.classList.toggle('picked', on);
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   카드 상호작용 (클릭 위임 · 길게 누르기 · 우클릭 · 키보드)
+══════════════════════════════════════════════════════════════════════ */
+function onCardActivate(ch, e){
+  if (e && e.shiftKey){ openDetail(ch); return; }
+  if (state.bagMode) toggleBag(ch);
+  else copyChar(ch);
+}
+
+var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function addRipple(el, x, y){
+  if (reduceMotion) return;
   var s = document.createElement('span');
   s.className = 'ripple';
   var r = el.getBoundingClientRect();
   var sz = Math.max(r.width, r.height);
-  s.style.width  = sz + 'px';
-  s.style.height = sz + 'px';
-  s.style.left   = (e.clientX - r.left - sz / 2) + 'px';
-  s.style.top    = (e.clientY - r.top  - sz / 2) + 'px';
+  s.style.cssText = 'width:' + sz + 'px;height:' + sz + 'px;left:' +
+    ((x - r.left) - sz/2) + 'px;top:' + ((y - r.top) - sz/2) + 'px';
   el.appendChild(s);
-  s.addEventListener('animationend', function() { s.remove(); });
+  s.addEventListener('animationend', function(){ s.remove(); });
 }
 
-/* ============================================================
-   COPY
-============================================================ */
-var toastTimer = null;
-function copyChar(c) {
-  function done() { pushR(c); showToast(c + '  복사 완료!'); }
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(c).then(done).catch(function() { fbCopy(c, done); });
-  } else {
-    fbCopy(c, done);
-  }
-}
-function fbCopy(c, cb) {
-  var ta = document.createElement('textarea');
-  ta.value = c;
-  ta.style.position = 'fixed';
-  ta.style.opacity  = '0';
-  document.body.appendChild(ta);
-  ta.select();
-  try { document.execCommand('copy'); } catch(e) {}
-  ta.remove();
-  cb();
-}
-function showToast(msg) {
-  var el = document.getElementById('toast');
-  document.getElementById('toastTxt').textContent = msg;
-  el.classList.remove('t-out');
-  el.classList.add('t-in');
-  el.style.opacity = '1';
-  el.style.pointerEvents = 'auto';
-  if (toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(function() {
-    el.classList.remove('t-in');
-    el.classList.add('t-out');
-    setTimeout(function() {
-      el.style.opacity = '0';
-      el.style.pointerEvents = 'none';
-    }, 290);
-  }, 1800);
-}
-
-/* ============================================================
-   문서작성 탭 렌더
-============================================================ */
-function renderDocPanel() {
-  var panel = document.getElementById('docPanel');
-  panel.innerHTML = '';
-
-  DOC_SECTIONS.forEach(function(sec) {
-    var wrap = document.createElement('div');
-    wrap.className = 'doc-section';
-
-    /* 헤더 */
-    var header = document.createElement('div');
-    header.className = 'doc-section-header';
-    header.innerHTML =
-      '<span class="material-icons text-gray-400" style="font-size:15px">' + sec.icon + '</span>' +
-      '<span class="doc-section-title">' + sec.title + '</span>' +
-      '<span class="doc-section-badge ' + sec.badgeClass + '">' + sec.badge + '</span>';
-    wrap.appendChild(header);
-
-    /* 규정 순서 시각화 (항목 구분 기호 섹션만) */
-    if (sec.seq) {
-      var noteEl = document.createElement('p');
-      noteEl.style.cssText = 'font-size:11px;color:#9ca3af;margin-bottom:8px;';
-      noteEl.textContent = sec.note;
-      wrap.appendChild(noteEl);
-
-      var flow = document.createElement('div');
-      flow.className = 'seq-flow';
-      sec.seq.forEach(function(item, idx) {
-        var chip = document.createElement('div');
-        chip.className = 'seq-chip';
-        chip.innerHTML =
-          '<span class="seq-chip-sym">' + item.sym + '</span>' +
-          '<span class="seq-chip-label">' + item.label + '</span>';
-        flow.appendChild(chip);
-        if (idx < sec.seq.length - 1) {
-          var arrow = document.createElement('span');
-          arrow.className = 'seq-arrow';
-          arrow.textContent = '→';
-          flow.appendChild(arrow);
-        }
-      });
-      wrap.appendChild(flow);
+var lpTimer = null, lpFired = false;
+function bindSurface(root){
+  root.addEventListener('click', function(e){
+    var favBtn = e.target.closest('.card-fav');
+    if (favBtn){ e.stopPropagation(); toggleFav(favBtn.dataset.fav); return; }
+    var card = e.target.closest('.card');
+    if (card){
+      if (lpFired){ lpFired = false; return; }
+      addRipple(card, e.clientX, e.clientY);
+      onCardActivate(card.dataset.c, e);
+      return;
     }
+    var chip = e.target.closest('.chip');
+    if (chip){
+      if (lpFired){ lpFired = false; return; }
+      if (chip.classList.contains('bag-item')) toggleBag(chip.dataset.c);
+      else copyChar(chip.dataset.c);
+    }
+  });
 
-    /* 카드 그리드 */
-    var grid = document.createElement('div');
-    grid.className = 'doc-grid';
-    sec.chars.forEach(function(entry) {
-      grid.appendChild(makeCard(entry[0], entry[1], false, true));
-    });
-    wrap.appendChild(grid);
+  root.addEventListener('contextmenu', function(e){
+    var t = e.target.closest('.card, .chip');
+    if (!t) return;
+    e.preventDefault();
+    openDetail(t.dataset.c);
+  });
 
-    panel.appendChild(wrap);
+  root.addEventListener('pointerdown', function(e){
+    var t = e.target.closest('.card, .chip');
+    if (!t || e.pointerType === 'mouse') return;
+    lpFired = false;
+    clearTimeout(lpTimer);
+    lpTimer = setTimeout(function(){
+      lpFired = true;
+      if (navigator.vibrate){ try { navigator.vibrate(12); } catch(err){} }
+      openDetail(t.dataset.c);
+    }, 480);
+  }, { passive:true });
+
+  ['pointerup','pointercancel','pointermove'].forEach(function(ev){
+    root.addEventListener(ev, function(){ clearTimeout(lpTimer); }, { passive:true });
   });
 }
+[elGrid, elSections, elFavRow, elRecentRow, elTrayItems].forEach(bindSurface);
+window.addEventListener('scroll', function(){ clearTimeout(lpTimer); }, { passive:true });
 
-/* ============================================================
-   섹션형 탭 렌더 (이모지형 · 별·도형) — 분류별 섹션
-============================================================ */
-function renderSectionPanel(sections) {
-  var panel = document.getElementById('docPanel');
-  panel.innerHTML = '';
-
-  sections.forEach(function(sec) {
-    var wrap = document.createElement('div');
-    wrap.className = 'doc-section';
-
-    var header = document.createElement('div');
-    header.className = 'doc-section-header';
-    header.innerHTML =
-      '<span class="material-icons text-gray-400" style="font-size:15px">' + sec.icon + '</span>' +
-      '<span class="doc-section-title">' + sec.label + '</span>' +
-      '<span class="doc-section-badge badge-etc">' + sec.chars.length + '개</span>';
-    wrap.appendChild(header);
-
-    var grid = document.createElement('div');
-    grid.className = 'grid gap-2';
-    grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(64px, 1fr))';
-    sec.chars.forEach(function(entry) {
-      grid.appendChild(makeCard(entry[0], entry[1], false, false));
-    });
-    wrap.appendChild(grid);
-
-    panel.appendChild(wrap);
-  });
-}
-
-/* ============================================================
-   RENDER (일반 탭)
-============================================================ */
-function getFiltered() {
-  var qn = q.trim().toLowerCase();
-  var seen = {};
-  var result = [];
-  for (var i = 0; i < D.length; i++) {
-    var entry = D[i];
-    var ch = entry[0], nm = entry[1], ct = entry[2];
-    if (cat !== 'all' && ct !== cat) continue;
-    var key = ch + '_' + ct;
-    if (cat === 'all') key = ch;
-    if (seen[key]) continue;
-    seen[key] = true;
-    if (!qn) { result.push(entry); continue; }
-    if (nm.toLowerCase().indexOf(qn) !== -1 || ch === qn) result.push(entry);
-  }
-  return result;
-}
-
-function renderGrid() {
-  var g    = document.getElementById('grid');
-  var lbl  = document.getElementById('countLabel');
-  var emEl = document.getElementById('empty');
-  var panel= document.getElementById('docPanel');
-
-  /* 문서작성 탭 */
-  if (cat === 'doc') {
-    g.classList.add('hidden');
-    panel.classList.remove('hidden');
-    emEl.classList.add('hidden');
-    lbl.textContent = '';
-    renderDocPanel();
-    return;
-  }
-
-  /* 이모지형·별/도형 탭 — 검색어가 없을 때는 분류별 섹션으로 표시 */
-  if ((cat === 'emoji' || cat === 'shape') && !q.trim()) {
-    g.classList.add('hidden');
-    panel.classList.remove('hidden');
-    emEl.classList.add('hidden');
-    lbl.textContent = '';
-    renderSectionPanel(cat === 'emoji' ? EMOJI_SECTIONS : SHAPE_SECTIONS);
-    return;
-  }
-
-  /* 일반 탭 */
-  panel.classList.add('hidden');
-  g.classList.remove('hidden');
-  g.innerHTML = '';
-
-  var data = getFiltered();
-  if (!data.length) {
-    emEl.classList.remove('hidden');
-    lbl.textContent = '';
-    return;
-  }
-  emEl.classList.add('hidden');
-  lbl.textContent = data.length + '개';
-
-  var frag = document.createDocumentFragment();
-  for (var i = 0; i < data.length; i++) {
-    frag.appendChild(makeCard(data[i][0], data[i][1], false, false));
-  }
-  g.appendChild(frag);
-}
-
-/* ============================================================
-   TABS
-============================================================ */
-function renderTabs() {
-  var t = document.getElementById('tabs');
-  t.innerHTML = '';
-  CATS.forEach(function(c) {
-    var b = document.createElement('button');
-    var isActive = (c.id === cat);
-    b.className = 'tab-btn flex items-center gap-1 px-3 py-2.5 text-xs font-semibold text-gray-500' + (isActive ? ' on' : '');
-    b.setAttribute('data-cat', c.id);
-    b.innerHTML = '<span class="material-icons" style="font-size:14px">' + c.icon + '</span>' + c.label;
-    b.addEventListener('click', function() {
-      cat = c.id;
-      document.querySelectorAll('.tab-btn').forEach(function(x) { x.classList.remove('on'); });
-      b.classList.add('on');
-      renderGrid();
-    });
-    t.appendChild(b);
-  });
-}
-
-/* ============================================================
-   SEARCH
-============================================================ */
-function clearSearch() {
-  var qEl = document.getElementById('q');
-  qEl.value = '';
-  q = '';
-  document.getElementById('clearBtn').classList.add('hidden');
-  renderGrid();
-  qEl.focus();
-}
-
-document.getElementById('q').addEventListener('input', function(e) {
-  q = e.target.value;
-  document.getElementById('clearBtn').classList.toggle('hidden', !q);
-
-  if (q && cat !== 'all') {
-    cat = 'all';
-    document.querySelectorAll('.tab-btn').forEach(function(x) { x.classList.remove('on'); });
-    var allTab = document.querySelector('.tab-btn[data-cat="all"]');
-    if (allTab) allTab.classList.add('on');
-  }
-
-  renderGrid();
+/* 섹션 접기·펼치기 */
+elSections.addEventListener('click', function(e){
+  var head = e.target.closest('.section-head');
+  if (!head) return;
+  var collapsed = head.parentElement.classList.toggle('collapsed');
+  head.setAttribute('aria-expanded', String(!collapsed));
 });
 
-/* ============================================================
-   INIT
-============================================================ */
-renderTabs();
-renderGrid();
-renderRecent();
+/* 그리드 방향키 이동 */
+function gridKeyNav(e){
+  var card = e.target.closest && e.target.closest('.card');
+  if (!card) return;
+  if (e.key === 'Enter' || e.key === ' '){
+    e.preventDefault();
+    var r = card.getBoundingClientRect();
+    addRipple(card, r.left + r.width/2, r.top + r.height/2);
+    onCardActivate(card.dataset.c, e);
+    return;
+  }
+  if (e.key === 'f' || e.key === 'F'){ e.preventDefault(); toggleFav(card.dataset.c); return; }
+  if (['ArrowRight','ArrowLeft','ArrowDown','ArrowUp'].indexOf(e.key) === -1) return;
+  var wrap = card.parentElement;
+  var cards = Array.prototype.slice.call(wrap.querySelectorAll('.card'));
+  var idx = cards.indexOf(card);
+  if (idx === -1) return;
+  var cols = Math.max(1, Math.round(wrap.clientWidth / (card.offsetWidth + 7)));
+  var next = e.key === 'ArrowRight' ? idx+1 : e.key === 'ArrowLeft' ? idx-1
+           : e.key === 'ArrowDown' ? idx+cols : idx-cols;
+  if (next < 0 || next >= cards.length) return;
+  e.preventDefault();
+  cards[next].focus();
+}
+elGrid.addEventListener('keydown', gridKeyNav);
+elSections.addEventListener('keydown', function(e){
+  var head = e.target.closest && e.target.closest('.section-head');
+  if (head && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); head.click(); return; }
+  gridKeyNav(e);
+});
 
-/* ============================================================
-   PWA — 서비스워커 등록 (오프라인 캐시·설치 지원)
-============================================================ */
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('sw.js').catch(function() {});
+/* ══════════════════════════════════════════════════════════════════════
+   문자 상세
+══════════════════════════════════════════════════════════════════════ */
+var detailOverlay=$('detailOverlay'), detailBody=$('detailBody');
+var detailChar = '', lastFocused = null;
+
+function openDetail(ch){
+  detailChar = ch;
+  var nm = nameOf(ch) || '이름 없는 문자';
+  var catId = catOf(ch);
+  var g = gradeOf(ch), alt = altOf(ch);
+  var cps = Array.from(ch);
+  var htmlEnt = cps.map(function(c){ return '&#x' + c.codePointAt(0).toString(16).toUpperCase() + ';'; }).join('');
+  var cssEsc  = cps.map(function(c){ return '\\' + c.codePointAt(0).toString(16).toUpperCase(); }).join('');
+  var jsEsc   = cps.map(function(c){
+    var v = c.codePointAt(0);
+    return v > 0xFFFF ? '\\u{' + v.toString(16).toUpperCase() + '}'
+                      : '\\u' + v.toString(16).toUpperCase().padStart(4,'0');
+  }).join('');
+  var favOn = favs.indexOf(ch) !== -1;
+  var display = esc(displayGlyph(ch, catId));
+  var emojiCls = isEmojiGlyph(ch, catId) ? ' emoji' : '';
+
+  var h =
+    '<div class="detail-hero">' +
+      '<span class="detail-glyph' + emojiCls + '">' + display + '</span>' +
+      '<div class="detail-meta">' +
+        '<p class="detail-name">' + esc(nm) + '</p>' +
+        '<p class="detail-cp">' + esc(cpString(ch)) + '</p>' +
+      '</div>' +
+    '</div>' +
+    '<div class="grade grade-' + g.grade + '">' +
+      '<span class="mi" aria-hidden="true">' +
+        (g.grade === 'A' ? 'verified' : g.grade === 'B' ? 'help_outline' : 'report_problem') + '</span>' +
+      '<span><strong>' + GRADE_INFO[g.grade].label + ' — 문서·PDF 호환</strong>' + esc(g.why) + '</span>' +
+    '</div>';
+
+  if (alt){
+    h += '<div class="alt-box">' +
+           '<span class="alt-glyph">' + esc(alt) + '</span>' +
+           '<span class="alt-text"><b>안전한 대체 문자</b><br>' +
+             '공문서·PDF에는 <b>' + esc(alt) + '</b> ' + esc(nameOf(alt) || '') +
+             ' 쪽이 깨지지 않아요.</span>' +
+           '<button class="btn btn-ghost btn-sm" data-copy="' + esc(alt) + '" data-label="대체 문자를 복사했어요">' +
+             '<span class="mi" aria-hidden="true">content_copy</span>복사</button>' +
+         '</div>';
+  }
+
+  h += '<p style="font-size:11.5px;color:var(--text-4);margin-bottom:6px">글꼴별로 이렇게 보여요</p>' +
+       '<div class="font-preview">' +
+         '<div><span class="fp-glyph fp-serif">' + display + '</span><span class="fp-label">바탕(명조)</span></div>' +
+         '<div><span class="fp-glyph fp-gothic">' + display + '</span><span class="fp-label">맑은 고딕</span></div>' +
+         '<div><span class="fp-glyph fp-web' + emojiCls + '">' + display + '</span><span class="fp-label">이 사이트</span></div>' +
+       '</div>' +
+       '<div class="kv">' +
+         kvRow('유니코드', cpString(ch), ch) +
+         kvRow('HTML 엔티티', htmlEnt, htmlEnt) +
+         kvRow('CSS content', cssEsc, cssEsc) +
+         kvRow('JS 문자열', jsEsc, jsEsc) +
+       '</div>' +
+       '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+         '<button class="btn btn-ghost btn-sm" id="detailFav">' +
+           '<span class="mi" aria-hidden="true">' + (favOn ? 'star' : 'star_border') + '</span>' +
+           (favOn ? '즐겨찾기 해제' : '즐겨찾기 추가') + '</button>' +
+         '<button class="btn btn-ghost btn-sm" id="detailBag">' +
+           '<span class="mi" aria-hidden="true">shopping_basket</span>모아담기에 넣기</button>' +
+       '</div>';
+
+  detailBody.innerHTML = h;
+  $('detailFav').addEventListener('click', function(){ toggleFav(ch); openDetail(ch); });
+  $('detailBag').addEventListener('click', function(){
+    if (state.bag.indexOf(ch) === -1) state.bag.push(ch);
+    state.bagMode = true; $('bagMode').checked = true;
+    renderTray(); showToast('모아담기에 넣었어요', 'info');
   });
+  if (detailOverlay.hidden) openOverlay(detailOverlay);
+}
+function kvRow(key, val, copyVal){
+  return '<div class="kv-row"><span class="kv-key">' + esc(key) + '</span>' +
+         '<span class="kv-val">' + esc(val) + '</span>' +
+         '<button class="kv-copy" data-copy="' + esc(copyVal) + '" data-label="' + esc(key + '를 복사했어요') + '"' +
+         ' aria-label="' + esc(key + ' 복사') + '"><span class="mi" aria-hidden="true">content_copy</span></button></div>';
+}
+detailBody.addEventListener('click', function(e){
+  var b = e.target.closest('[data-copy]');
+  if (b) copyText(b.dataset.copy, b.dataset.label);
+});
+$('detailCopy').addEventListener('click', function(){ copyChar(detailChar); closeOverlay(detailOverlay); });
+
+/* ══════════════════════════════════════════════════════════════════════
+   오버레이 공통
+══════════════════════════════════════════════════════════════════════ */
+function openOverlay(ov){
+  lastFocused = document.activeElement;
+  ov.hidden = false;
+  requestAnimationFrame(function(){ ov.classList.add('open'); });
+  document.body.style.overflow = 'hidden';
+  var f = ov.querySelector('textarea, input, button:not([data-close])') || ov.querySelector('button');
+  if (f) setTimeout(function(){ f.focus({ preventScroll:true }); }, 60);
+}
+function closeOverlay(ov){
+  ov.classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(function(){ ov.hidden = true; }, 220);
+  if (lastFocused && lastFocused.focus) lastFocused.focus({ preventScroll:true });
+}
+document.querySelectorAll('.overlay').forEach(function(ov){
+  ov.addEventListener('click', function(e){
+    if (e.target === ov || e.target.closest('[data-close]')) closeOverlay(ov);
+  });
+});
+
+/* ══════════════════════════════════════════════════════════════════════
+   호환성 검사기 — 붙여넣은 글에서 깨질 문자를 찾아 안전 문자로 바꿉니다
+══════════════════════════════════════════════════════════════════════ */
+var checkerOverlay=$('checkerOverlay'), checkerInput=$('checkerInput'),
+    checkerStats=$('checkerStats'), checkerResult=$('checkerResult');
+var RE_SPACE = /^\s$/;
+
+function analyze(text){
+  var counts = { A:0, B:0, C:0 }, risky = {}, order = [];
+  graphemes(text).forEach(function(gch){
+    if (RE_SPACE.test(gch)) return;
+    var g = gradeOf(gch).grade;
+    counts[g]++;
+    if (g === 'A') return;
+    if (!risky[gch]){ risky[gch] = { ch:gch, grade:g, n:0, alt:altOf(gch) }; order.push(gch); }
+    risky[gch].n++;
+  });
+  return { counts:counts, risky:order.map(function(k){ return risky[k]; }) };
+}
+function fixText(text){
+  return graphemes(text).map(function(gch){ return altOf(gch) || gch; }).join('');
+}
+
+function runChecker(){
+  var text = checkerInput.value;
+  if (!text.trim()){
+    checkerStats.innerHTML = '';
+    checkerResult.innerHTML = '<p style="font-size:12.5px;color:var(--text-4);text-align:center;padding:18px 0">' +
+      '검사할 글을 입력하면 결과가 여기에 나타나요</p>';
+    return;
+  }
+  var r = analyze(text);
+  checkerStats.innerHTML =
+    '<div class="stat a"><b>' + r.counts.A + '</b><span>안전</span></div>' +
+    '<div class="stat b"><b>' + r.counts.B + '</b><span>보통</span></div>' +
+    '<div class="stat c"><b>' + r.counts.C + '</b><span>주의</span></div>';
+
+  var h = '';
+  if (!r.risky.length){
+    h += '<div class="grade grade-A"><span class="mi" aria-hidden="true">verified</span>' +
+         '<span><strong>깨질 문자가 없어요</strong>이대로 한글·워드에 붙여넣고 PDF로 저장해도 안전합니다.</span></div>';
+  } else {
+    var cCount = r.risky.filter(function(x){ return x.grade === 'C'; }).length;
+    h += '<div class="grade grade-' + (cCount ? 'C' : 'B') + '">' +
+         '<span class="mi" aria-hidden="true">' + (cCount ? 'report_problem' : 'help_outline') + '</span>' +
+         '<span><strong>확인이 필요한 문자 ' + r.risky.length + '종</strong>' +
+         (cCount ? cCount + '종은 PDF 변환·인쇄에서 깨질 가능성이 높아요. 아래 “안전 문자로 변환”을 눌러 보세요.'
+                 : '문서 글꼴에 따라 빈칸이 될 수 있어요. PDF 저장 전에 한 번 확인해 주세요.') +
+         '</span></div><div class="risk-list">';
+    r.risky.forEach(function(x){
+      h += '<div class="risk-row">' +
+             '<span class="risk-glyph">' + esc(x.ch) + '</span>' +
+             '<span class="risk-info"><b>' + esc(nameOf(baseChar(x.ch)) || cpString(x.ch)) + '</b>' +
+               '<small>' + esc(cpString(x.ch)) + ' · ' + GRADE_INFO[x.grade].label +
+               (x.n > 1 ? ' · ' + x.n + '번' : '') + '</small></span>' +
+             (x.alt ? '<span class="risk-alt"><span class="mi" aria-hidden="true" style="font-size:14px">arrow_forward</span>' +
+                      '<span class="g">' + esc(x.alt) + '</span></span>' : '') +
+           '</div>';
+    });
+    h += '</div>';
+  }
+
+  h += '<p style="font-size:11.5px;color:var(--text-4);margin:14px 0 5px">미리보기 — 색이 칠해진 글자가 확인이 필요한 문자예요</p>' +
+       '<div class="result-box">' + graphemes(text).map(function(gch){
+         if (RE_SPACE.test(gch)) return esc(gch);
+         var g = gradeOf(gch).grade;
+         return g === 'A' ? esc(gch)
+           : '<mark class="' + (g === 'C' ? 'bad' : 'mid') + '">' + esc(gch) + '</mark>';
+       }).join('') + '</div>';
+
+  checkerResult.innerHTML = h;
+}
+
+checkerInput.addEventListener('input', runChecker);
+$('checkerFix').addEventListener('click', function(){
+  var before = checkerInput.value;
+  if (!before.trim()){ showToast('먼저 검사할 글을 입력해 주세요', 'info'); return; }
+  var after = fixText(before);
+  checkerInput.value = after;
+  runChecker();
+  if (after === before) showToast('바꿀 문자가 없었어요', 'info');
+  else showToast('안전한 문자로 바꿨어요');
+});
+$('checkerCopy').addEventListener('click', function(){
+  if (!checkerInput.value){ showToast('복사할 내용이 없어요', 'info'); return; }
+  copyText(checkerInput.value, '결과를 복사했어요');
+});
+$('btnChecker').addEventListener('click', function(){ openOverlay(checkerOverlay); runChecker(); });
+
+/* ══════════════════════════════════════════════════════════════════════
+   설정 · 테마
+══════════════════════════════════════════════════════════════════════ */
+var mqDark = window.matchMedia ? matchMedia('(prefers-color-scheme: dark)') : null;
+var THEME_LABEL = { auto:'기기 설정 따르기', light:'밝게', dark:'어둡게' };
+
+function applyTheme(){
+  var dark = settings.theme === 'dark' || (settings.theme === 'auto' && mqDark && mqDark.matches);
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  var btn = $('btnTheme'), icon = btn.querySelector('.mi');
+  if (icon) icon.textContent = settings.theme === 'auto' ? 'brightness_auto' : (dark ? 'dark_mode' : 'light_mode');
+  btn.setAttribute('aria-label', '화면 테마: ' + THEME_LABEL[settings.theme]);
+}
+if (mqDark && mqDark.addEventListener){
+  mqDark.addEventListener('change', function(){ if (settings.theme === 'auto') applyTheme(); });
+}
+
+function applySize(){
+  /* 실제 치수는 CSS 쪽에서 화면 폭까지 함께 보고 정합니다 (모바일은 한 칸 더 들어가도록) */
+  document.documentElement.setAttribute('data-size', settings.size || 'm');
+}
+function applyGradeDots(){ document.body.classList.toggle('show-grade', !!settings.grade); }
+function saveSettings(){ lsSet(K_SET, settings); }
+function syncSegs(){
+  [['segTheme','theme'],['segSize','size']].forEach(function(p){
+    $(p[0]).querySelectorAll('button').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.dataset.v === settings[p[1]]));
+    });
+  });
+  $('setGrade').checked = !!settings.grade;
+}
+$('segTheme').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if (!b) return;
+  settings.theme = b.dataset.v; saveSettings(); applyTheme(); syncSegs();
+});
+$('segSize').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if (!b) return;
+  settings.size = b.dataset.v; saveSettings(); applySize(); syncSegs();
+});
+$('setGrade').addEventListener('change', function(e){
+  settings.grade = e.target.checked; saveSettings(); applyGradeDots();
+});
+$('btnSettings').addEventListener('click', function(){ syncSegs(); openOverlay($('settingsOverlay')); });
+$('btnTheme').addEventListener('click', function(){
+  var order = ['auto','light','dark'];
+  settings.theme = order[(order.indexOf(settings.theme) + 1) % 3];
+  saveSettings(); applyTheme(); syncSegs();
+  showToast('테마: ' + THEME_LABEL[settings.theme], 'info');
+});
+$('resetAll').addEventListener('click', function(){
+  if (!confirm('즐겨찾기·최근 복사·설정을 모두 지울까요?')) return;
+  [K_FAV, K_RECENT, K_SET, K_LEGACY].forEach(function(k){ try { localStorage.removeItem(k); } catch(e){} });
+  location.hash = '';
+  location.reload();
+});
+
+/* ══════════════════════════════════════════════════════════════════════
+   검색 · 툴바 · 트레이
+══════════════════════════════════════════════════════════════════════ */
+var searchTimer = null;
+elQ.addEventListener('input', function(e){
+  var v = e.target.value;
+  elQClear.hidden = !v;
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(function(){ state.q = v; render(); }, 110);
+});
+function clearSearch(){
+  elQ.value = ''; state.q = ''; elQClear.hidden = true; render(); elQ.focus();
+}
+elQClear.addEventListener('click', clearSearch);
+$('emptyReset').addEventListener('click', clearSearch);
+
+$('safeMode').addEventListener('change', function(e){
+  state.safeMode = e.target.checked;
+  render();
+  showToast(state.safeMode ? 'PDF에서 깨질 수 있는 문자를 숨겼어요' : '모든 문자를 다시 보여 줍니다', 'info');
+});
+$('bagMode').addEventListener('change', function(e){
+  state.bagMode = e.target.checked;
+  renderTray();
+  if (state.bagMode) showToast('문자를 누르면 아래에 모입니다', 'info');
+});
+$('trayCopy').addEventListener('click', function(){
+  if (!state.bag.length){ showToast('담은 문자가 없어요', 'info'); return; }
+  var sep = $('traySep').value === '\\n' ? '\n' : $('traySep').value;
+  copyText(state.bag.join(sep), state.bag.length + '개 문자를 복사했어요');
+  state.bag.forEach(pushRecent);
+});
+$('trayClear').addEventListener('click', function(){
+  state.bag = []; renderTray();
+  document.querySelectorAll('.card.picked').forEach(function(el){ el.classList.remove('picked'); });
+});
+$('clearFav').addEventListener('click', function(){
+  if (!favs.length || !confirm('즐겨찾기를 모두 지울까요?')) return;
+  favs = []; lsSet(K_FAV, favs); renderFav();
+  document.querySelectorAll('.card-fav.on').forEach(function(b){
+    b.classList.remove('on');
+    var mi = b.querySelector('.mi'); if (mi) mi.textContent = 'star_border';
+  });
+  if (state.cat === 'fav') render();
+});
+$('clearRecent').addEventListener('click', function(){
+  recent = []; lsSet(K_RECENT, recent); renderRecent();
+});
+
+elToTop.addEventListener('click', function(){ window.scrollTo({ top:0, behavior:'smooth' }); });
+window.addEventListener('scroll', function(){
+  elToTop.classList.toggle('show', window.scrollY > 500);
+}, { passive:true });
+
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape'){
+    var open = document.querySelector('.overlay.open');
+    if (open){ closeOverlay(open); return; }
+    if (elQ.value) clearSearch();
+    return;
+  }
+  var typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  if (!typing && (e.key === '/' || (e.key === 'k' && (e.metaKey || e.ctrlKey)))){
+    e.preventDefault(); elQ.focus(); elQ.select();
+  }
+});
+
+/* ══════════════════════════════════════════════════════════════════════
+   URL 상태 (딥링크 · 공유)
+══════════════════════════════════════════════════════════════════════ */
+var suppressHash = false;
+function syncURL(){
+  if (suppressHash) return;
+  var h = '#' + state.cat + (state.q.trim() ? '?q=' + encodeURIComponent(state.q.trim()) : '');
+  if (location.hash !== h){
+    try { history.replaceState(null, '', h); } catch(e){}
+  }
+}
+function readURL(){
+  var h = location.hash.replace(/^#/, '');
+  if (!h) return;
+  var parts = h.split('?');
+  var c = decodeURIComponent(parts[0] || '');
+  if (CATS.some(function(x){ return x.id === c; })) state.cat = c;
+  if (parts[1]){
+    var m = parts[1].match(/q=([^&]*)/);
+    if (m){
+      state.q = decodeURIComponent(m[1]);
+      elQ.value = state.q;
+      elQClear.hidden = !state.q;
+    }
+  }
+}
+window.addEventListener('hashchange', function(){
+  suppressHash = true;
+  readURL();
+  renderTabs(); renderFav(); render();
+  suppressHash = false;
+});
+
+/* ══════════════════════════════════════════════════════════════════════
+   아이콘 폰트 안전망 — 끝내 못 불러오면 리터럴 텍스트가 새지 않게 감춥니다
+══════════════════════════════════════════════════════════════════════ */
+(function guardIconFont(){
+  /* document.fonts.check() 는 해당 패밀리가 아예 없을 때도 true 를 돌려주므로
+     신뢰할 수 없습니다. 리가처가 실제로 한 글자로 합쳐졌는지 폭을 재서 판정합니다. */
+  var probe = document.createElement('span');
+  probe.textContent = 'grid_view';
+  probe.setAttribute('aria-hidden', 'true');
+  probe.style.cssText = 'position:absolute;left:-9999px;top:0;font-size:24px;line-height:1;' +
+    'white-space:nowrap;font-family:"Material Icons Outlined";';
+  document.body.appendChild(probe);
+
+  function settle(){
+    var w = probe.offsetWidth;
+    document.documentElement.classList.toggle('mi-ok', w > 0 && w <= 32);
+  }
+  settle();
+  [120, 600, 1500, 3200, 6000].forEach(function(ms){ setTimeout(settle, ms); });
+  if (document.fonts && document.fonts.ready){
+    document.fonts.ready.then(settle).catch(function(){});
+    if (document.fonts.load){
+      document.fonts.load('24px "Material Icons Outlined"', 'grid_view').then(settle).catch(function(){});
+    }
+  }
+})();
+
+/* ══════════════════════════════════════════════════════════════════════
+   시작
+══════════════════════════════════════════════════════════════════════ */
+readURL();
+applyTheme();
+applySize();
+applyGradeDots();
+syncSegs();
+renderTabs();
+renderFav();
+renderRecent();
+renderTray();
+render();
+
+$('footerMeta').textContent = 'SymbolBox v' + APP_VERSION + ' · 문자 ' + CAT_COUNT.all.toLocaleString('ko-KR') + '종';
+$('verBadge').textContent = 'v' + APP_VERSION.split('.').slice(0,2).join('.');
+
+/* PWA */
+if ('serviceWorker' in navigator){
+  window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
 }
 </script>
 </body>
